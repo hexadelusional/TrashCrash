@@ -1,5 +1,5 @@
 # PROJET-TRANSVERSE
 
-game name : pending...
+game name : Ultimate Écolo Strike 2D
 
 group name : campus des chads (pour l'instant lol)
