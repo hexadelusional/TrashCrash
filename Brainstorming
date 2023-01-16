@@ -13,5 +13,5 @@ A propos du fonctionnement :
 - 3 poubelles
 - le jeu s'arrête quand le temps est fini => gagnant = celui avec le meilleur score
 - les poubelles du joueur sont de l'autre côté du terrain
-- le décor change en fonction de l'écologie (arbres plantés, arbres en feu)
+- le décor/musique change en fonction de l'écologie (arbres plantés, arbres en feu)
 - perte de points si mauvaise poubelle/par terre
