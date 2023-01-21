@@ -1,5 +1,5 @@
 # PROJET-TRANSVERSE
 
-game name : Ultimate Écolo Strike 2D
+game name : Trash Crash
 
-group name : campus des chads (pour l'instant lol)
+group name : CAMPIfeur
