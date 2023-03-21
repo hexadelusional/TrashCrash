@@ -19,8 +19,8 @@ colliding = pygame.sprite.Group()
 clouds = [Cloud(WINDOW_SIZE)]
 sky = Sky(WINDOW_SIZE)
 
-player1 = Player(700, 100)
-player2 = Player(200, 100)
+player1 = Player('pink', 700, 100)
+player2 = Player('white', 200, 100)
 floor = Floor(75, WINDOW_SIZE)
 left_bound = pygame.sprite.Sprite()
 left_bound.rect = pygame.Rect(-100, 0, 100, WINDOW_SIZE[1])
@@ -28,7 +28,6 @@ right_bound = pygame.sprite.Sprite()
 right_bound.rect = pygame.Rect(WINDOW_SIZE[0], 0, 100, WINDOW_SIZE[1])
 colliding.add(left_bound)
 colliding.add(right_bound)
-colliding.add(player1)
 colliding.add(floor)
 
 clock = pygame.time.Clock()
@@ -46,18 +45,26 @@ while running:
 
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RIGHT:
-				player1.move_right()
-
+				player1.move_right(colliding)
 			if event.key == pygame.K_UP:
 				player1.jump(colliding)
-
 			if event.key == pygame.K_LEFT:
-				player1.move_left()
+				player1.move_left(colliding)
+			if event.key == pygame.K_d:
+				player2.move_right(colliding)
+			if event.key == pygame.K_w:
+				player2.jump(colliding)
+			if event.key == pygame.K_a:
+				player2.move_left(colliding)
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_RIGHT and player1.vel_x > 0:
 				player1.stop()
 			if event.key == pygame.K_LEFT and player1.vel_x < 0:
 				player1.stop()
+			if event.key == pygame.K_d and player2.vel_x > 0:
+				player2.stop()
+			if event.key == pygame.K_a and player2.vel_x < 0:
+				player2.stop()
 
 	# Clear the screen
 	window.fill((0, 255, 0))

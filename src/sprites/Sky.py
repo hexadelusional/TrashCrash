@@ -6,7 +6,7 @@ class Sky():
 		self.image = pygame.transform.scale(self.image, window_size)
 		self.rect = self.image.get_rect()
 		self.image_asset = self.image.copy()
-		self.speed = 1
+		self.speed = 0.5
 		self.x = window_size[0]
 
 	def update(self):
