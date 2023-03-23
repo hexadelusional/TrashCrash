@@ -12,6 +12,5 @@ class Floor(pygame.sprite.Sprite):
 		platform_image = pygame.image.load('assets/images/floor.png')
 		for i in range(0, self.rect.width, platform_image.get_width()):
 			for j in range(0, height, platform_image.get_height()):
-				print(i, j)
 				self.image.blit(platform_image, (i, j))
 		

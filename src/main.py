@@ -1,13 +1,16 @@
 import pygame
+from functools import partial
 from sprites.Cloud import Cloud
 from sprites.Floor import Floor
+from sprites.Gauge import Gauge
 
 from sprites.Player import Player
 from sprites.FpsDebugger import FpsDebugger
+from sprites.Projectile import Projectile
 from sprites.Sky import Sky
 
+# Initialize game window
 pygame.init()
-
 WINDOW_SIZE = (1280, 720)
 icon = pygame.image.load('assets/icon.png')
 window = pygame.display.set_mode(WINDOW_SIZE)
@@ -15,20 +18,56 @@ pygame.display.set_caption('Trash Crash')
 pygame.display.set_icon(icon)
 debug_font = pygame.font.SysFont('Arial', 20)
 
-colliding = pygame.sprite.Group()
-clouds = [Cloud(WINDOW_SIZE)]
+# Initialize game objects
 sky = Sky(WINDOW_SIZE)
-
-player1 = Player('pink', 700, 100)
-player2 = Player('white', 200, 100)
+clouds = [Cloud(WINDOW_SIZE)]
+platforms = pygame.sprite.Group()
 floor = Floor(75, WINDOW_SIZE)
 left_bound = pygame.sprite.Sprite()
 left_bound.rect = pygame.Rect(-100, 0, 100, WINDOW_SIZE[1])
 right_bound = pygame.sprite.Sprite()
 right_bound.rect = pygame.Rect(WINDOW_SIZE[0], 0, 100, WINDOW_SIZE[1])
-colliding.add(left_bound)
-colliding.add(right_bound)
-colliding.add(floor)
+middle_bound = pygame.sprite.Sprite()
+middle_bound.rect = pygame.Rect(WINDOW_SIZE[0] / 2 - 5, 0, 10, WINDOW_SIZE[1])
+
+test_platform = pygame.sprite.Sprite()
+test_platform.rect = pygame.Rect(150, 500, 200, 15)
+test_platform.image = pygame.Surface((200, 20))
+test_platform.image.fill((0, 255, 0))
+platforms.add(test_platform)
+
+platforms.add(left_bound)
+platforms.add(right_bound)
+platforms.add(floor)
+player_platforms = platforms.copy()
+player_platforms.add(middle_bound)
+# Initialize players
+player1 = Player('pink', 700, 100)
+player1_controls = {
+	pygame.KEYDOWN: {
+		pygame.K_j: partial(player1.move, platforms, 'left'),
+		pygame.K_l: partial(player1.move, platforms, 'right'),
+		pygame.K_i: partial(player1.jump, platforms),
+		pygame.K_o: partial(player1.throw, platforms)
+	},
+	pygame.KEYUP: {
+		pygame.K_j: partial(player1.stop, 'left'),
+		pygame.K_l: partial(player1.stop, 'right')
+	}
+}
+player2 = Player('white', 200, 100)
+player2_controls = {
+	pygame.KEYDOWN: {
+		pygame.K_a: partial(player2.move, platforms, 'left'),
+		pygame.K_d: partial(player2.move, platforms, 'right'),
+		pygame.K_w: partial(player2.jump, platforms),
+		pygame.K_e: partial(player2.throw, platforms)
+	},
+	pygame.KEYUP: {
+		pygame.K_a: partial(player2.stop, 'left'),
+		pygame.K_d: partial(player2.stop, 'right')
+	}
+}
 
 clock = pygame.time.Clock()
 fps_debugger = FpsDebugger()
@@ -43,28 +82,12 @@ while running:
 		if event.type == pygame.QUIT:
 			running = False
 
-		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_RIGHT:
-				player1.move_right(colliding)
-			if event.key == pygame.K_UP:
-				player1.jump(colliding)
-			if event.key == pygame.K_LEFT:
-				player1.move_left(colliding)
-			if event.key == pygame.K_d:
-				player2.move_right(colliding)
-			if event.key == pygame.K_w:
-				player2.jump(colliding)
-			if event.key == pygame.K_a:
-				player2.move_left(colliding)
-		if event.type == pygame.KEYUP:
-			if event.key == pygame.K_RIGHT and player1.vel_x > 0:
-				player1.stop()
-			if event.key == pygame.K_LEFT and player1.vel_x < 0:
-				player1.stop()
-			if event.key == pygame.K_d and player2.vel_x > 0:
-				player2.stop()
-			if event.key == pygame.K_a and player2.vel_x < 0:
-				player2.stop()
+		if event.type in player1_controls:
+			if event.key in player1_controls[event.type]:
+				player1_controls[event.type][event.key]()
+		if event.type in player2_controls:
+			if event.key in player2_controls[event.type]:
+				player2_controls[event.type][event.key]()
 
 	# Clear the screen
 	window.fill((0, 255, 0))
@@ -79,13 +102,16 @@ while running:
 		cloud.draw(window)
 		if cloud.rect.right < 0:
 			clouds.remove(cloud)
+	Projectile.instances.update(platforms)
 	# Update the game state
-	player1.update(colliding)
-	player2.update(colliding)
+	player1.update(player_platforms)
+	player2.update(player_platforms)
 	fps_debugger.update(clock)
 	# Draw game objects
+	window.blit(test_platform.image, test_platform.rect)
 	player1.draw(window)
 	player2.draw(window)
+	Projectile.instances.draw(window)
 	window.blit(floor.image, floor.rect)
 	fps_debugger.draw(window)
 	# Flip the display
