@@ -32,8 +32,7 @@ middle_bound.rect = pygame.Rect(WINDOW_SIZE[0] / 2 - 5, 0, 10, WINDOW_SIZE[1])
 
 test_platform = pygame.sprite.Sprite()
 test_platform.rect = pygame.Rect(150, 500, 200, 15)
-test_platform.image = pygame.Surface((200, 20))
-test_platform.image.fill((0, 255, 0))
+test_platform.image = pygame.image.load('assets/images/dark_platform.png')
 platforms.add(test_platform)
 
 platforms.add(left_bound)
@@ -42,7 +41,7 @@ platforms.add(floor)
 player_platforms = platforms.copy()
 player_platforms.add(middle_bound)
 # Initialize players
-player1 = Player('pink', 700, 100)
+player1 = Player('pink', 1, 700, 100)
 player1_controls = {
 	pygame.KEYDOWN: {
 		pygame.K_j: partial(player1.move, platforms, 'left'),
@@ -55,7 +54,7 @@ player1_controls = {
 		pygame.K_l: partial(player1.stop, 'right')
 	}
 }
-player2 = Player('white', 200, 100)
+player2 = Player('white', 2, 200, 100)
 player2_controls = {
 	pygame.KEYDOWN: {
 		pygame.K_a: partial(player2.move, platforms, 'left'),
@@ -88,12 +87,14 @@ while running:
 		if event.type in player2_controls:
 			if event.key in player2_controls[event.type]:
 				player2_controls[event.type][event.key]()
+		player1.arrow.update_rotation(event)
+		player2.arrow.update_rotation(event)
 
 	# Clear the screen
 	window.fill((0, 255, 0))
 
 	# Secondary updates
-	sky.update()
+	#sky.update()
 	sky.draw(window)
 	if framecount % 240 == 0:
 		clouds.append(Cloud(WINDOW_SIZE))

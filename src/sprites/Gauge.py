@@ -25,5 +25,5 @@ class Gauge():
 	
 	def draw(self, window):
 		pygame.draw.rect(window, (15, 15, 15), (self.x - self.padding, self.y - self.padding, self.width + self.padding * 2, self.height + self.padding * 2))
-		y = (self.y  + self.height) - (self.height * (self.value / self.max_value))
+		y = (self.y + self.height) - (self.height * (self.value / self.max_value))
 		pygame.draw.rect(window, self.color, (self.x, y, self.width, self.height * (self.value / self.max_value)))

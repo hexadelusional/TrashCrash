@@ -9,7 +9,7 @@ class Floor(pygame.sprite.Sprite):
 		self.rect.y = window_size[1] - height
 		self.rect.width = window_size[0]
 		self.rect.height = height
-		platform_image = pygame.image.load('assets/images/floor.png')
+		platform_image = pygame.image.load('assets/images/dark_pebbles.png')
 		for i in range(0, self.rect.width, platform_image.get_width()):
 			for j in range(0, height, platform_image.get_height()):
 				self.image.blit(platform_image, (i, j))

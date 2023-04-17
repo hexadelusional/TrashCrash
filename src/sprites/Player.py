@@ -1,14 +1,15 @@
 import pygame
 from sprites.Gauge import Gauge
-
+from sprites.Arrow import Arrow
 from sprites.Particle import Particle
 from sprites.Projectile import Projectile
 
 class Player(pygame.sprite.Sprite):
 	SPRITE_SIZE = (32, 32)
-	def __init__(self, skin, x, y):
+	def __init__(self, skin, id, x, y):
 		super().__init__()
 		self.skin = skin
+		self.id = id
 		self.rect = pygame.Rect(x, y, 64, 64)
 		self.image = pygame.Surface(Player.SPRITE_SIZE)
 		self.image.set_alpha(255)
@@ -21,6 +22,7 @@ class Player(pygame.sprite.Sprite):
 		self.animation_speed = 8
 		self.particles = []
 		self.gauge = Gauge(self.rect.x, self.rect.y)
+		self.arrow = Arrow(self.rect.x, self.rect.y, self.id)
 		self.animations = {
 			'idle': pygame.image.load(f'assets/images/player/idle/{self.skin}.png'),
 			'run': pygame.image.load(f'assets/images/player/run/{self.skin}.png'),
@@ -45,7 +47,9 @@ class Player(pygame.sprite.Sprite):
 	def update(self, platforms):
 		self.apply_gravity()
 		gauge_x = self.rect.x + self.rect.width + 5 if self.mirror else self.rect.x - 5
+		arrow_x = self.rect.x + self.rect.width - 5 if self.mirror else self.rect.x + 5
 		self.gauge.update(gauge_x, self.rect.y)
+		self.arrow.update(arrow_x, self.rect.y-30)
 		for particle in self.particles:
 			particle.update()
 			if particle.is_finished():
@@ -70,6 +74,7 @@ class Player(pygame.sprite.Sprite):
 			particle.draw(window)
 		if self.throwing:
 			self.gauge.draw(window)
+			self.arrow.draw(window)
 
 
 	def animate(self):
@@ -146,6 +151,7 @@ class Player(pygame.sprite.Sprite):
 			self.set_animation('idle')
 
 	def throw(self, platforms):
+		#part for the particle
 		if not self.is_on_ground(platforms):
 			return
 		if not self.throwing:
@@ -156,6 +162,10 @@ class Player(pygame.sprite.Sprite):
 		else:
 			self.throwing = False
 			self.set_animation('throw')
-			vel_x = (4 + 5 * self.gauge.value / 100 ) * (-1 if self.mirror else 1)
+			vel_x = (4 + 5 * self.gauge.value / 100) * (-1 if self.mirror else 1)
 			vel_y = -5 - 15 * self.gauge.value / 100
 			Projectile(self.rect.x, self.rect.y, vel_x, vel_y)
+		#part for the arrow
+
+
+
