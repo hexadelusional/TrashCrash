@@ -172,12 +172,20 @@ def set_menu_section(section):
 	global menu_section
 	menu_section = section
 
+def quit():
+	global running
+	running = False
+
 efrei_card = pygame.image.load('assets/ui/efrei.png')
 efrei_card = efrei_card.convert_alpha()
 
 play_btn = Button(390, 260, 'Play!', lambda: set_menu_section(1), 500)
 tutorial_btn = Button(390, 360, 'Tutorial', lambda: print('Tutorial'), 500)
-quit_btn = Button(390, 460, 'Quit', lambda: print('Quit'), 500)
+quit_btn = Button(390, 460, 'Quit', quit, 500)
+logo = pygame.image.load('assets/logo.png')
+logo_rect = logo.get_rect()
+logo_rect.centerx = 640
+logo_rect.y = 30
 
 pink = Character('Pink', 'assets/ui/characters/pink.png', 'pygame sucks', {'strength': 0.4, 'speed': 0.8, 'weight': 0.5, 'accuracy': 0.94}, 'runs fast')
 blue = Character('Blue', 'assets/ui/characters/blue.png', 'trash pygame', {'strength': 0.2, 'speed': 0.9, 'weight': 0.7, 'accuracy': 1}, 'jumps high')
@@ -222,7 +230,9 @@ while running and alpha < 255:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False
-	print(alpha)
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_RETURN:
+				alpha = 500
 	window.blit(efrei_card, (0, 0))
 	dim.set_alpha(alpha)
 	window.blit(dim, (0, 0))
@@ -243,7 +253,7 @@ while running and alpha < 255:
 # == Menu loop ==
 ready = False
 while running:
-	window.fill((255, 26, 85))
+	window.fill((0,0,0))
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False
@@ -270,6 +280,7 @@ while running:
 			card2.update(character_select.characters[character_select.p2_selection])
 
 	if menu_section == 0:
+		window.blit(logo, logo_rect)
 		play_btn.draw(window)
 		tutorial_btn.draw(window)
 		quit_btn.draw(window)
