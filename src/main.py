@@ -8,6 +8,7 @@ from sprites.Player import Player
 from sprites.FpsDebugger import FpsDebugger
 from sprites.Projectile import Projectile
 from sprites.Sky import Sky
+from sprites.Bin import Bin
 
 # Initialize game window
 pygame.init()
@@ -19,6 +20,19 @@ pygame.display.set_icon(icon)
 debug_font = pygame.font.SysFont('Arial', 20)
 
 # Initialize game objects
+bin1 = Bin(0,550,100,100)
+bin1.rect = pygame.Rect(bin1)
+bin2 = Bin(100,550,100,100)
+bin2.rect = pygame.Rect(bin2)
+bin3 = Bin(200,550,100,100)
+bin3.rect = pygame.Rect(bin3)
+bin4 = Bin(980,550,100,100)
+bin4.rect = pygame.Rect(bin4)
+bin5 = Bin(1080,550,100,100)
+bin5.rect = pygame.Rect(bin5)
+bin6 = Bin(1180,550,100,100)
+bin6.rect = pygame.Rect(bin6)
+
 sky = Sky(WINDOW_SIZE)
 clouds = [Cloud(WINDOW_SIZE)]
 platforms = pygame.sprite.Group()
@@ -38,6 +52,12 @@ platforms.add(test_platform)
 platforms.add(left_bound)
 platforms.add(right_bound)
 platforms.add(floor)
+platforms.add(bin1)
+platforms.add(bin2)
+platforms.add(bin3)
+platforms.add(bin4)
+platforms.add(bin5)
+platforms.add(bin6)
 player_platforms = platforms.copy()
 player_platforms.add(middle_bound)
 # Initialize players
@@ -115,6 +135,15 @@ while running:
 	Projectile.instances.draw(window)
 	window.blit(floor.image, floor.rect)
 	fps_debugger.draw(window)
+	bin1.draw(window)
+	bin2.draw(window)
+	bin3.draw(window)
+	bin4.draw(window)
+	bin5.draw(window)
+	bin6.draw(window)
+ 
+	#############################################################################bins.draw(window)
+	
 	# Flip the display
 	pygame.display.flip()
 	# Limit the frame rate
