@@ -3,13 +3,13 @@ import pygame
 
 
 class Bin (pygame.sprite.Sprite) :
-    def __init__(self,x,y,width,height) :
+    def __init__(self, x, y, width, height, image):
         super().__init__()
         #self.image = pygame.image.load(f'assets/images/bins/{randint(0,2)}.png')
-        self.image = pygame.image.load('assets/images/bins/redbin.png')
+        self.image = image
         self.rect = self.image.get_rect()
-        self.rect.x=x
-        self.rect.y=y
+        self.rect.x = x
+        self.rect.y = y
         self.rect.width = width
         self.rect.height = height
         '''
