@@ -3,10 +3,10 @@ import pygame
 
 class Cloud():
 	def __init__(self, window_size):
-		self.image = pygame.image.load(f'assets/images/clouds/{randint(0,5)}.png')
+		self.image = pygame.image.load(f'assets/images/dark_clouds/{randint(0,5)}.png')
 		self.rect = self.image.get_rect()
 		self.rect.x = window_size[0]
-		self.rect.y = randint(0, window_size[1] - self.rect.height - 200)
+		self.rect.y = randint(0, window_size[1] - self.rect.height - 500)
 		self.speed = 1 + randint(0, 1)
 
 	def update(self):
