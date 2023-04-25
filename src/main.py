@@ -3,6 +3,8 @@ from functools import partial
 from sprites.Cloud import Cloud
 from sprites.Floor import Floor
 from sprites.Gauge import Gauge
+from sprites.RockPlat import Rock_platform
+
 
 from sprites.Player import Player
 from sprites.FpsDebugger import FpsDebugger
@@ -30,11 +32,11 @@ bin4 = Bin(955, 550, 125, 118, pygame.image.load('assets/images/bins/yellowbin.p
 bin4.rect = pygame.Rect(bin4)
 bin5 = Bin(1078, 550, 100, 110, pygame.image.load('assets/images/bins/bluebin.png'))
 bin5.rect = pygame.Rect(bin5)
-bin6 = Bin(1175, 550, 110, 110, pygame.image.load('assets/images/bins/redbin.png'))
+bin6 = Bin(1175, 550, 110, 110, pygame.image.load('assets/images/is/redbin.png'))
 bin6.rect = pygame.Rect(bin6)
-
 sky = Sky(WINDOW_SIZE)
 clouds = [Cloud(WINDOW_SIZE)]
+rock_plats = [Rock_platform(WINDOW_SIZE)]
 platforms = pygame.sprite.Group()
 floor = Floor(75, WINDOW_SIZE)
 left_bound = pygame.sprite.Sprite()
@@ -43,11 +45,6 @@ right_bound = pygame.sprite.Sprite()
 right_bound.rect = pygame.Rect(WINDOW_SIZE[0], 0, 100, WINDOW_SIZE[1])
 middle_bound = pygame.sprite.Sprite()
 middle_bound.rect = pygame.Rect(WINDOW_SIZE[0] / 2 - 5, 0, 10, WINDOW_SIZE[1])
-
-test_platform = pygame.sprite.Sprite()
-test_platform.rect = pygame.Rect(150, 500, 200, 15)
-test_platform.image = pygame.image.load('assets/images/dark_platform.png')
-platforms.add(test_platform)
 
 platforms.add(left_bound)
 platforms.add(right_bound)
@@ -124,12 +121,29 @@ while running:
 		if cloud.rect.right < 0:
 			clouds.remove(cloud)
 	Projectile.instances.update(platforms)
-	# Update the game state
+
+	# about platforms
+	min_distance = 100
+	if framecount % 280 == 0 :
+		if not rock_plats or WINDOW_SIZE[0] - rock_plats[-1].rect.right >= min_distance : 
+			rock_plats.append(Rock_platform(WINDOW_SIZE))
+
+	for rock_plat in rock_plats :
+		platforms.add(rock_plat)
+		rock_plat.rect = pygame.Rect(rock_plat)
+		rock_plat.update()
+		rock_plat.draw(window)
+		if rock_plat.rect.right < 0 :
+			rock_plats.remove(rock_plat)
+
+	# Update the game statell
 	player1.update(player_platforms)
 	player2.update(player_platforms)
 	fps_debugger.update(clock)
 	# Draw game objects
+	'''
 	window.blit(test_platform.image, test_platform.rect)
+	'''
 	player1.draw(window)
 	player2.draw(window)
 	Projectile.instances.draw(window)
