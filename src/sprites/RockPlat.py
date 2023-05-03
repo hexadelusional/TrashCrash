@@ -15,4 +15,3 @@ class Rock_platform(pygame.sprite.Sprite):
 
 	def draw(self, window):
 		window.blit(self.image, self.rect)
-s
