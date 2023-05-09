@@ -3,8 +3,8 @@ from functools import partial
 from sprites.Cloud import Cloud
 from sprites.Floor import Floor
 from sprites.Gauge import Gauge
-from sprites.RockPlat import Rock_platform
-
+from sprites.RockPlat import MyRockPlatform
+from random import randint
 
 from sprites.Player import Player
 from sprites.FpsDebugger import FpsDebugger
@@ -36,7 +36,8 @@ bin6 = Bin(1175, 550, 110, 110, pygame.image.load('assets/images/bins/redbin.png
 bin6.rect = pygame.Rect(bin6)
 sky = Sky(WINDOW_SIZE)
 clouds = [Cloud(WINDOW_SIZE)]
-rock_plats = [Rock_platform(WINDOW_SIZE)]
+#rock_plats = [Rock_platform(WINDOW_SIZE)]
+rock_list = []
 platforms = pygame.sprite.Group()
 floor = Floor(75, WINDOW_SIZE)
 left_bound = pygame.sprite.Sprite()
@@ -123,18 +124,21 @@ while running:
 	Projectile.instances.update(platforms)
 
 	# about platforms
-	min_distance = 100
 	if framecount % 280 == 0 :
-		if not rock_plats or WINDOW_SIZE[0] - rock_plats[-1].rect.right >= min_distance : 
-			rock_plats.append(Rock_platform(WINDOW_SIZE))
-
-	for rock_plat in rock_plats :
-		platforms.add(rock_plat)
-		rock_plat.rect = pygame.Rect(rock_plat)
-		rock_plat.update()
+		if len(rock_list) < 5 :
+			val = randint(0,1)
+			x = [WINDOW_SIZE[0],0][val]
+			y = randint(350, 600)
+			dir = [-1,1][val]
+			width = randint(200,250)
+			plat_img = pygame.image.load('assets/images/rock_platforms/1.png')
+			rock_plat = MyRockPlatform(plat_img, dir, x, y, width)
+			platforms.add(rock_plat)
+			rock_list.append(rock_plat)
+	for rock_plat in rock_list :
+		rock_plat.update(WINDOW_SIZE[0])
 		rock_plat.draw(window)
-		if rock_plat.rect.right < 0 :
-			rock_plats.remove(rock_plat)
+		
 
 	# Update the game statell
 	player1.update(player_platforms)

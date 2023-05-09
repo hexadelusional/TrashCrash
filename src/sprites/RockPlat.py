@@ -1,17 +1,23 @@
-from random import randint
+from random import randint, random
 import pygame
 
-class Rock_platform(pygame.sprite.Sprite):
-	def __init__(self, window_size):
+class MyRockPlatform(pygame.sprite.Sprite):
+	def __init__(self, image, dir, x, y, width):
 		super().__init__()
-		self.image = pygame.image.load(f'assets/images/rock_platforms/{randint(1,2)}.png')
+		self.image = pygame.transform.scale(image, (width, 65))
 		self.rect = self.image.get_rect()
-		self.rect.x = window_size[0]
-		self.rect.y = randint(200, window_size[1] - self.rect.height - 100)
-		self.speed = 0.7 + randint(0, 1)
+		self.direction = dir
+		self.rect.x = x
+		self.rect.y = y
+		self.speed = 0.7 + random()
+		
 
-	def update(self):
-		self.rect.x -= self.speed
+	def update(self, window_width):
+		self.rect.x -= self.speed * self.direction
+		
+		if self.rect.left < 0 or self.rect.right > window_width : 
+			self.direction *= -1
 
 	def draw(self, window):
 		window.blit(self.image, self.rect)
+
