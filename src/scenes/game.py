@@ -1,10 +1,11 @@
 from functools import partial
+
 import pygame
+
 from core.Scene import Scene
 from sprites.Bin import Bin
 from sprites.Cloud import Cloud
 from sprites.Floor import Floor
-from sprites.FpsDebugger import FpsDebugger
 from sprites.Player import Player
 from sprites.Projectile import Projectile
 from sprites.Sky import Sky
