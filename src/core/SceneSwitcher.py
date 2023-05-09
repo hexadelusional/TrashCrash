@@ -28,5 +28,6 @@ class SceneSwitcher():
 			return
 		self.current_scene.loop(self.window, *args, **kwargs)
 		self.fps.update(self.clock)
-		self.fps.draw(self.window)	
+		self.fps.draw(self.window)
+		pygame.display.flip()
 		self.clock.tick(60)

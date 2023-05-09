@@ -126,6 +126,5 @@ def loop(scene, window):
 	scene.bin4.draw(window)
 	scene.bin5.draw(window)
 	scene.bin6.draw(window)
-	pygame.display.flip()
 
 game_scene = Scene(on_enter, loop)
