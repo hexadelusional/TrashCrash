@@ -16,8 +16,6 @@ class SceneSwitcher():
 		self.scenes[scene_name] = scene
 	
 	def switch_to(self, scene_name, *args, **kwargs):
-		if self.current_scene != None:
-			return
 		self.current_scene = self.scenes[scene_name]
 		self.current_scene.on_enter(*args, **kwargs)
 
