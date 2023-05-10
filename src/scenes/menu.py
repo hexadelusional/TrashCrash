@@ -59,8 +59,9 @@ def on_loop(scene, window):
 				if not scene.ready:
 					scene.ready = True
 				else:
-					scene.menu_section = 0
+					scene.switcher.switch_to('game', {})
 					scene.ready = False
+					return
 
 		if scene.menu_section == 0:
 			scene.play_btn.update(event)
