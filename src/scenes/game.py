@@ -41,11 +41,6 @@ def on_enter(scene, settings):
 	scene.middle_bound = pygame.sprite.Sprite()
 	scene.middle_bound.rect = pygame.Rect(WINDOW_SIZE[0] / 2 - 5, 0, 10, WINDOW_SIZE[1])
 
-	scene.test_platform = pygame.sprite.Sprite()
-	scene.test_platform.rect = pygame.Rect(150, 500, 200, 15)
-	scene.test_platform.image = pygame.image.load('assets/images/dark_platform.png')
-	scene.platforms.add(scene.test_platform)
-
 	scene.platforms.add(scene.left_bound)
 	scene.platforms.add(scene.right_bound)
 	scene.platforms.add(scene.floor)
@@ -87,6 +82,9 @@ def on_enter(scene, settings):
 	scene.framecount = 0
 
 def loop(scene, window):
+	# Clear the screen
+	window.fill((0, 255, 0))
+
 	scene.framecount += 1
 	# Handle events
 	for event in pygame.event.get():
@@ -101,24 +99,6 @@ def loop(scene, window):
 		scene.player1.arrow.update_rotation(event)
 		scene.player2.arrow.update_rotation(event)
 
-	if scene.framecount % 280 == 0 :
-		if len(scene.rock_list) < 5 :
-			val = randint(0,1)
-			x = [WINDOW_SIZE[0],0][val]
-			y = randint(350, 600)
-			dir = [-1,1][val]
-			width = randint(200,250)
-			plat_img = pygame.image.load('assets/images/rock_platforms/1.png')
-			rock_plat = MyRockPlatform(plat_img, dir, x, y, width)
-			scene.platforms.add(rock_plat)
-			scene.rock_list.append(rock_plat)
-	for rock_plat in scene.rock_list :
-		rock_plat.update(WINDOW_SIZE[0])
-		rock_plat.draw(window)
-
-	# Clear the screen
-	window.fill((0, 255, 0))
-
 	# Secondary updates
 	#sky.update()
 	scene.sky.draw(window)
@@ -130,11 +110,25 @@ def loop(scene, window):
 		if cloud.rect.right < 0:
 			scene.clouds.remove(cloud)
 	Projectile.instances.update(scene.platforms)
+	if scene.framecount % 280 == 0 :
+		if len(scene.rock_list) < 5 :
+			val = randint(0,1)
+			x = [WINDOW_SIZE[0],0][val]
+			y = randint(350, 600)
+			dir = [-1,1][val]
+			width = randint(200,250)
+			plat_img = pygame.image.load('assets/images/rock_platforms/1.png')
+			rock_plat = MyRockPlatform(plat_img, dir, x, y, width)
+			scene.player_platforms.add(rock_plat)
+			scene.rock_list.append(rock_plat)
+	for rock_plat in scene.rock_list :
+		rock_plat.update(WINDOW_SIZE[0])
+		rock_plat.draw(window)
+
 	# Update the game state
 	scene.player1.update(scene.player_platforms)
 	scene.player2.update(scene.player_platforms)
 	# Draw game objects
-	window.blit(scene.test_platform.image, scene.test_platform.rect)
 	scene.player1.draw(window)
 	scene.player2.draw(window)
 	Projectile.instances.draw(window)
