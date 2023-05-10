@@ -1,4 +1,5 @@
 from functools import partial
+from random import randint
 
 import pygame
 
@@ -8,6 +9,7 @@ from sprites.Cloud import Cloud
 from sprites.Floor import Floor
 from sprites.Player import Player
 from sprites.Projectile import Projectile
+from sprites.RockPlat import MyRockPlatform
 from sprites.Sky import Sky
 
 WINDOW_SIZE = (1280, 720)
@@ -30,6 +32,7 @@ def on_enter(scene, settings):
 	scene.sky = Sky(WINDOW_SIZE)
 	scene.clouds = [Cloud(WINDOW_SIZE)]
 	scene.platforms = pygame.sprite.Group()
+	scene.rock_list = []
 	scene.floor = Floor(75, WINDOW_SIZE)
 	scene.left_bound = pygame.sprite.Sprite()
 	scene.left_bound.rect = pygame.Rect(-100, 0, 100, WINDOW_SIZE[1])
@@ -97,6 +100,21 @@ def loop(scene, window):
 				scene.player2_controls[event.type][event.key]()
 		scene.player1.arrow.update_rotation(event)
 		scene.player2.arrow.update_rotation(event)
+
+	if scene.framecount % 280 == 0 :
+		if len(scene.rock_list) < 5 :
+			val = randint(0,1)
+			x = [WINDOW_SIZE[0],0][val]
+			y = randint(350, 600)
+			dir = [-1,1][val]
+			width = randint(200,250)
+			plat_img = pygame.image.load('assets/images/rock_platforms/1.png')
+			rock_plat = MyRockPlatform(plat_img, dir, x, y, width)
+			scene.platforms.add(rock_plat)
+			scene.rock_list.append(rock_plat)
+	for rock_plat in scene.rock_list :
+		rock_plat.update(WINDOW_SIZE[0])
+		rock_plat.draw(window)
 
 	# Clear the screen
 	window.fill((0, 255, 0))
