@@ -47,9 +47,9 @@ class Player(pygame.sprite.Sprite):
 	def update(self, platforms):
 		self.apply_gravity()
 		gauge_x = self.rect.x + self.rect.width + 5 if self.mirror else self.rect.x - 5
-		arrow_x = self.rect.x + self.rect.width - 5 if self.mirror else self.rect.x + 5
+		arrow_x = self.rect.x + self.rect.width + 5 if self.mirror else self.rect.x - 5
 		self.gauge.update(gauge_x, self.rect.y)
-		self.arrow.update(arrow_x, self.rect.y-30)
+		self.arrow.update(arrow_x, self.rect.y)
 		for particle in self.particles:
 			particle.update()
 			if particle.is_finished():
@@ -63,6 +63,7 @@ class Player(pygame.sprite.Sprite):
 				self.can_double_jump = True
 				if self.current_animation == 'jump':
 					self.set_animation('idle')
+
 		self.animate()
 
 	def draw(self, window):
@@ -75,7 +76,6 @@ class Player(pygame.sprite.Sprite):
 		if self.throwing:
 			self.gauge.draw(window)
 			self.arrow.draw(window)
-
 
 	def animate(self):
 		sequence = self.animations[self.current_animation]
@@ -165,7 +165,6 @@ class Player(pygame.sprite.Sprite):
 			vel_x = (4 + 5 * self.gauge.value / 100) * (-1 if self.mirror else 1)
 			vel_y = -5 - 15 * self.gauge.value / 100
 			Projectile(self.rect.x, self.rect.y, vel_x, vel_y)
-		#part for the arrow
 
 
 

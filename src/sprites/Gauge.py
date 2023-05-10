@@ -12,13 +12,13 @@ class Gauge():
 		self.max_value = 100
 		self.color = (63, 234, 42)
 	
-	def update(self,x, y):
+	def update(self, x, y):
 		self.x = x
 		self.y = y
-		self.value+=self.direction
+		self.value += self.direction
 		if self.value >= self.max_value:
 			self.value = self.max_value
-			self.direction*=-1
+			self.direction *= -1
 		elif self.value <= 0:
 			self.value = 0
 			self.direction*=-1
