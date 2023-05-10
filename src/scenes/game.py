@@ -96,8 +96,8 @@ def loop(scene, window):
 		if event.type in scene.player2_controls:
 			if event.key in scene.player2_controls[event.type]:
 				scene.player2_controls[event.type][event.key]()
-		scene.player1.arrow.update_rotation(event)
-		scene.player2.arrow.update_rotation(event)
+		scene.player1.arrow.rotation(event)
+		scene.player2.arrow.rotation(event)
 
 	# Secondary updates
 	#sky.update()
