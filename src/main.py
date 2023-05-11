@@ -22,7 +22,7 @@ switcher = SceneSwitcher(window)
 switcher.add_scene('intro', intro_scene)
 switcher.add_scene('main_menu', main_menu_scene)
 switcher.add_scene('game', game_scene)
-switcher.switch_to('intro')
+switcher.switch_to('game',0)
 
 running = True
 while running:

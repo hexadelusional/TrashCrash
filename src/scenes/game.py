@@ -11,23 +11,30 @@ from sprites.Player import Player
 from sprites.Projectile import Projectile
 from sprites.RockPlat import MyRockPlatform
 from sprites.Sky import Sky
+from sprites.Score import Score
 
 WINDOW_SIZE = (1280, 720)
 def on_enter(scene, settings):
 	print('New game started')
 	# Initialize game objects
-	scene.bin1 = Bin(0, 550, 110, 110, pygame.image.load('assets/images/bins/redbin.png'))
+	scene.bin1 = Bin(0, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png'))
 	scene.bin1.rect = pygame.Rect(scene.bin1)
-	scene.bin2 = Bin(100, 550, 100, 110, pygame.image.load('assets/images/bins/bluebin.png'))
+	scene.bin2 = Bin(78, 570, 80, 80, pygame.image.load('assets/images/bins/bluebin.png'))
 	scene.bin2.rect = pygame.Rect(scene.bin2)
-	scene.bin3 = Bin(175, 550, 125, 118, pygame.image.load('assets/images/bins/yellowbin.png'))
+	scene.bin3 = Bin(156, 570, 90, 90, pygame.image.load('assets/images/bins/yellowbin.png'))
 	scene.bin3.rect = pygame.Rect(scene.bin3)
-	scene.bin4 = Bin(955, 550, 125, 118, pygame.image.load('assets/images/bins/yellowbin.png'))
+	scene.bin4 = Bin(1030, 570, 90, 90, pygame.image.load('assets/images/bins/yellowbin.png'))
 	scene.bin4.rect = pygame.Rect(scene.bin4)
-	scene.bin5 = Bin(1078, 550, 100, 110, pygame.image.load('assets/images/bins/bluebin.png'))
+	scene.bin5 = Bin(1122, 570, 80, 80, pygame.image.load('assets/images/bins/bluebin.png'))
 	scene.bin5.rect = pygame.Rect(scene.bin5)
-	scene.bin6 = Bin(1175, 550, 110, 110, pygame.image.load('assets/images/bins/redbin.png'))
+	scene.bin6 = Bin(1200, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png'))
 	scene.bin6.rect = pygame.Rect(scene.bin6)
+ 
+	scene.score1=Score(300,680)
+	scene.score2=Score(800,680)
+ #update les scores en mettant scene.score1.update pour update le score 1 précisément
+
+
 
 	scene.sky = Sky(WINDOW_SIZE)
 	scene.clouds = [Cloud(WINDOW_SIZE)]
@@ -44,12 +51,12 @@ def on_enter(scene, settings):
 	scene.platforms.add(scene.left_bound)
 	scene.platforms.add(scene.right_bound)
 	scene.platforms.add(scene.floor)
-	scene.platforms.add(scene.bin1)
-	scene.platforms.add(scene.bin2)
-	scene.platforms.add(scene.bin3)
-	scene.platforms.add(scene.bin4)
-	scene.platforms.add(scene.bin5)
-	scene.platforms.add(scene.bin6)
+	#scene.platforms.add(scene.bin1)
+	#scene.platforms.add(scene.bin2)
+	#scene.platforms.add(scene.bin3)
+	#scene.platforms.add(scene.bin4)
+	#scene.platforms.add(scene.bin5)
+	#scene.platforms.add(scene.bin6)
 	scene.player_platforms = scene.platforms.copy()
 	scene.player_platforms.add(scene.middle_bound)
 	# Initialize players
@@ -129,9 +136,6 @@ def loop(scene, window):
 	scene.player1.update(scene.player_platforms)
 	scene.player2.update(scene.player_platforms)
 	# Draw game objects
-	scene.player1.draw(window)
-	scene.player2.draw(window)
-	Projectile.instances.draw(window)
 	window.blit(scene.floor.image, scene.floor.rect)
 	scene.bin1.draw(window)
 	scene.bin2.draw(window)
@@ -139,5 +143,13 @@ def loop(scene, window):
 	scene.bin4.draw(window)
 	scene.bin5.draw(window)
 	scene.bin6.draw(window)
+	scene.player1.draw(window)
+	scene.player2.draw(window)
+	Projectile.instances.draw(window)
+	
+
+ 
+	scene.score1.draw(window)
+	scene.score2.draw(window)
 
 game_scene = Scene(on_enter, loop)
