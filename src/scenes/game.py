@@ -1,6 +1,7 @@
 from functools import partial
 from random import randint
 
+
 import pygame
 
 from core.Scene import Scene
@@ -12,6 +13,7 @@ from sprites.Projectile import Projectile
 from sprites.RockPlat import MyRockPlatform
 from sprites.Sky import Sky
 from sprites.Score import Score
+from sprites.Sound import Sound
 
 WINDOW_SIZE = (1280, 720)
 def on_enter(scene, settings):
@@ -32,6 +34,7 @@ def on_enter(scene, settings):
  
 	scene.score1=Score(300,680)
 	scene.score2=Score(800,680)
+	scene.music= Sound()
  #update les scores en mettant scene.score1.update pour update le score 1 précisément
 
 
