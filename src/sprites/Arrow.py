@@ -24,9 +24,9 @@ class Arrow():
 
     def rotation(self, event):
         if event.type == pygame.KEYDOWN:
-            if self.player == 1 and event.key == pygame.K_z or self.player == 2 and event.key == pygame.K_i:
+            if self.player == 2 and event.key == pygame.K_z or self.player == 1 and event.key == pygame.K_i:
                 self.angle += 6
-            if self.player == 1 and event.key == pygame.K_s or self.player == 2 and event.key == pygame.K_k:
+            if self.player == 2 and event.key == pygame.K_s or self.player == 1 and event.key == pygame.K_k:
                 self.angle -= 6
         self.image = pygame.transform.rotate(self.original_image, self.angle)
 

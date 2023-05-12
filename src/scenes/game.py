@@ -83,7 +83,7 @@ def on_enter(scene, settings):
 
 def loop(scene, window):
 	# Clear the screen
-	window.fill((0, 255, 0))
+	window.fill((173, 216, 230))
 
 	scene.framecount += 1
 	# Handle events
