@@ -104,11 +104,14 @@ class Player(pygame.sprite.Sprite):
 						self.rect.left = platform.rect.right
 					self.vel_x = 0
 				if direction == 'y':
-					if self.vel_y > 0:
+					if self.vel_y > 0 and self.rect.bottom >= platform.rect.top :
 						self.rect.bottom = platform.rect.top
-					elif self.vel_y < 0:
+					
+					elif self.vel_y < 0 :
 						self.rect.top = platform.rect.bottom
+					
 					self.vel_y = 0
+
 
 	def is_on_ground(self, platforms):
 		self.rect.y += 1

@@ -1,15 +1,21 @@
 from random import randint, random
 import pygame
 
+
+
+
 class MyRockPlatform(pygame.sprite.Sprite):
-	def __init__(self, image, dir, x, y, width):
+	def __init__(self, image, window_width, rock_list):
 		super().__init__()
-		self.image = pygame.transform.scale(image, (width, 65))
+		val = randint(0, 1)
+		self.image = image
 		self.rect = self.image.get_rect()
-		self.direction = dir
-		self.rect.x = x
-		self.rect.y = y
+		self.direction = [-1, 1][val]
+		self.rect.x = [window_width - self.rect.width, 0][val]
+		self.rect.y = 520 if not rock_list else rock_list[-1].rect.top - 120
+		self.rect.height = 5
 		self.speed = 0.7 + random()
+		
 		
 
 	def update(self, window_width):

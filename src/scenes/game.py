@@ -33,6 +33,7 @@ def on_enter(scene, settings):
 	scene.clouds = [Cloud(WINDOW_SIZE)]
 	scene.platforms = pygame.sprite.Group()
 	scene.rock_list = []
+	scene.plat_img = pygame.transform.scale(pygame.image.load('assets/images/rock_platforms/1.png'), (200, 65))
 	scene.floor = Floor(75, WINDOW_SIZE)
 	scene.left_bound = pygame.sprite.Sprite()
 	scene.left_bound.rect = pygame.Rect(-100, 0, 100, WINDOW_SIZE[1])
@@ -56,10 +57,10 @@ def on_enter(scene, settings):
 	scene.player1 = Player('pink', 1, 700, 100)
 	scene.player1_controls = {
 		pygame.KEYDOWN: {
-			pygame.K_j: partial(scene.player1.move, scene.platforms, 'left'),
-			pygame.K_l: partial(scene.player1.move, scene.platforms, 'right'),
-			pygame.K_i: partial(scene.player1.jump, scene.platforms),
-			pygame.K_o: partial(scene.player1.throw, scene.platforms)
+			pygame.K_j: partial(scene.player1.move, scene.player_platforms, 'left'),
+			pygame.K_l: partial(scene.player1.move, scene.player_platforms, 'right'),
+			pygame.K_i: partial(scene.player1.jump, scene.player_platforms),
+			pygame.K_o: partial(scene.player1.throw, scene.player_platforms)
 		},
 		pygame.KEYUP: {
 			pygame.K_j: partial(scene.player1.stop, 'left'),
@@ -69,10 +70,10 @@ def on_enter(scene, settings):
 	scene.player2 = Player('white', 2, 200, 100)
 	scene.player2_controls = {
 		pygame.KEYDOWN: {
-			pygame.K_a: partial(scene.player2.move, scene.platforms, 'left'),
-			pygame.K_d: partial(scene.player2.move, scene.platforms, 'right'),
-			pygame.K_w: partial(scene.player2.jump, scene.platforms),
-			pygame.K_e: partial(scene.player2.throw, scene.platforms)
+			pygame.K_a: partial(scene.player2.move, scene.player_platforms, 'left'),
+			pygame.K_d: partial(scene.player2.move, scene.player_platforms, 'right'),
+			pygame.K_w: partial(scene.player2.jump, scene.player_platforms),
+			pygame.K_e: partial(scene.player2.throw, scene.player_platforms)
 		},
 		pygame.KEYUP: {
 			pygame.K_a: partial(scene.player2.stop, 'left'),
@@ -117,8 +118,7 @@ def loop(scene, window):
 			y = randint(350, 600)
 			dir = [-1,1][val]
 			width = randint(200,250)
-			plat_img = pygame.image.load('assets/images/rock_platforms/1.png')
-			rock_plat = MyRockPlatform(plat_img, dir, x, y, width)
+			rock_plat = MyRockPlatform(scene.plat_img, WINDOW_SIZE[0], scene.rock_list)
 			scene.player_platforms.add(rock_plat)
 			scene.rock_list.append(rock_plat)
 	for rock_plat in scene.rock_list :
