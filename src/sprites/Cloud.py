@@ -1,9 +1,11 @@
-from random import randint
+from random import choice, randint
 import pygame
+
+IMAGES = [pygame.image.load(f'assets/images/clouds/{i}.png') for i in range(6)]
 
 class Cloud():
 	def __init__(self, window_size):
-		self.image = pygame.image.load(f'assets/images/dark_clouds/{randint(0,5)}.png')
+		self.image = choice(IMAGES)
 		self.rect = self.image.get_rect()
 		val = randint(0, 1)
 		self.direction = [-1, 1][val]
