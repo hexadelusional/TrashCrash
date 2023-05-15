@@ -8,7 +8,7 @@ from sprites.Cloud import Cloud
 from sprites.Floor import Floor
 from sprites.Player import Player
 from sprites.Projectile import Projectile
-from sprites.RockPlat import MyRockPlatform
+from sprites.Platform import Platform
 from sprites.Score import Score
 from sprites.Sky import Sky
 from sprites.Sound import Sound
@@ -110,7 +110,7 @@ def loop(scene, window):
 	Projectile.instances.update(scene.platforms)
 	if scene.framecount % 280 == 0 :
 		if len(scene.rock_list_left) < 4 or len(scene.rock_list_right) < 4:
-			rock_plat = MyRockPlatform(WINDOW_SIZE[0], scene.rock_list_left, scene.rock_list_right)
+			rock_plat = Platform(WINDOW_SIZE[0], scene.rock_list_left, scene.rock_list_right)
 			scene.player_platforms.add(rock_plat)
 			if not(rock_plat.side) : 
 				scene.rock_list_left.append(rock_plat)

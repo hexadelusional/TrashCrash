@@ -1,11 +1,13 @@
 import pygame
 import math
 
+IMAGE = pygame.image.load('assets/images/projectile.png')
+
 class Projectile(pygame.sprite.Sprite):
 	instances = pygame.sprite.Group()
 	def __init__(self, x, y, gauge_value, angle, mirror):
 		super().__init__()
-		self.image = pygame.image.load('assets/images/projectile.png')
+		self.image = IMAGE.copy()
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
