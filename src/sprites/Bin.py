@@ -8,7 +8,7 @@ IMAGES = {
 	'yellow': pygame.transform.scale(pygame.image.load('assets/images/bins/yellow.png'), BIN_DIMENSIONS)
 }
 
-class Bin (pygame.sprite.Sprite) :
+class Bin(pygame.sprite.Sprite) :
 	def __init__(self, x, y, color):
 		super().__init__()
 		self.image = IMAGES[color]
