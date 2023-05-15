@@ -11,7 +11,7 @@ from sprites.Projectile import Projectile
 from sprites.Platform import Platform
 from sprites.Score import Score
 from sprites.Sky import Sky
-from sprites.Sound import Sound
+from core.Sound import Sound
 
 WINDOW_SIZE = (1280, 720)
 def on_enter(scene, settings):

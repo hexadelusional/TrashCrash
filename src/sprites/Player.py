@@ -3,7 +3,7 @@ from sprites.Gauge import Gauge
 from sprites.Arrow import Arrow
 from sprites.Particle import Particle
 from sprites.Projectile import Projectile
-from sprites.Sound import Sound
+from core.Sound import Sound
 
 PLAYER_ANIMATIONS = {}
 def get_animation_frames(skin, animation):
