@@ -1,14 +1,13 @@
 import pygame
 
 BIN_DIMENSIONS = (80, 80)
-print('executed')
 IMAGES = {
 	'blue': pygame.transform.scale(pygame.image.load('assets/images/bins/blue.png'), BIN_DIMENSIONS),
 	'red': pygame.transform.scale(pygame.image.load('assets/images/bins/red.png'), BIN_DIMENSIONS),
 	'yellow': pygame.transform.scale(pygame.image.load('assets/images/bins/yellow.png'), BIN_DIMENSIONS)
 }
 
-class Bin(pygame.sprite.Sprite) :
+class Bin(pygame.sprite.Sprite):
 	def __init__(self, x, y, color):
 		super().__init__()
 		self.image = IMAGES[color]
