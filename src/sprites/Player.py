@@ -3,7 +3,24 @@ from sprites.Gauge import Gauge
 from sprites.Arrow import Arrow
 from sprites.Particle import Particle
 from sprites.Projectile import Projectile
-from sprites.Sound import Sound 
+from sprites.Sound import Sound
+
+PLAYER_ANIMATIONS = {}
+def get_animation_frames(skin, animation):
+	if animation == 'pre_throw':
+		animation = 'throw'
+	if f'{skin}_{animation}' not in PLAYER_ANIMATIONS:
+		PLAYER_ANIMATIONS[f'{skin}_{animation}'] = pygame.image.load(f'assets/images/player/{animation}/{skin}.png')
+	return PLAYER_ANIMATIONS[f'{skin}_{animation}']
+
+# Amount of frames in each animation
+ANIMATION_FRAMES = {
+	'idle': 4,
+	'run': 6,
+	'jump': 8,
+	'pre_throw': 2,
+	'throw': 4
+}
 
 class Player(pygame.sprite.Sprite):
 	SPRITE_SIZE = (32, 32)
@@ -24,24 +41,9 @@ class Player(pygame.sprite.Sprite):
 		self.particles = []
 		self.gauge = Gauge(self.rect.x, self.rect.y)
 		self.arrow = Arrow(self.rect.x, self.rect.y, self.id)
-		self.animations = {
-			'idle': pygame.image.load(f'assets/images/player/idle/{self.skin}.png'),
-			'run': pygame.image.load(f'assets/images/player/run/{self.skin}.png'),
-			'jump': pygame.image.load(f'assets/images/player/jump/{self.skin}.png'),
-			'pre_throw': pygame.image.load(f'assets/images/player/throw/{self.skin}.png'),
-			'throw': pygame.image.load(f'assets/images/player/throw/{self.skin}.png')
-		}
-		# Amount of frames in each animation
-		self.animation_frames = {
-			'idle': 4,
-			'run': 6,
-			'jump': 8,
-			'pre_throw': 2,
-			'throw': 4
-		}
 		self.current_animation = 'idle'
 		self.current_frame = 0
-		self.music= Sound() #we have to define the sound here to implement other sounds as jump1, jump2
+		self.music = Sound() #we have to define the sound here to implement other sounds as jump1, jump2
 
 	def apply_gravity(self):
 		self.vel_y += self.acc_y
@@ -82,11 +84,11 @@ class Player(pygame.sprite.Sprite):
 			self.arrow.draw(window, self.mirror)
 
 	def animate(self):
-		sequence = self.animations[self.current_animation]
+		sequence = get_animation_frames(self.skin, self.current_animation)
 		self.image.fill((0, 0, 0, 0))
 		self.image.blit(sequence, (0, 0), (self.current_frame // self.animation_speed * self.SPRITE_SIZE[0], 0, self.SPRITE_SIZE[0], self.SPRITE_SIZE[1]))
 		self.current_frame += 1
-		if self.current_frame == self.animation_frames[self.current_animation] * self.animation_speed:
+		if self.current_frame == ANIMATION_FRAMES[self.current_animation] * self.animation_speed:
 			if self.current_animation == 'throw':
 				self.set_animation('idle')
 			self.current_frame = 0
