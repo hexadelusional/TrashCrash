@@ -22,8 +22,8 @@ class Bin (pygame.sprite.Sprite) :
         #window.blit(scaled_image, self.rect, (0, 0, self.rect.width, self.rect.height))
         window.blit(scaled_image, self.rect, (0, 0, self.rect.width, self.rect.height))
         
-    def update(self):
-	    self.image.blit(self.image_asset, (self.x, 0))
+    '''def update(self): # pas encore nécessaire car pas d'update pour le moment 
+	    self.image.blit(self.image_asset, (self.x, 0))'''
         
         #self.rect=pygame.Rect(3,548,90,90)
         #self.rect = pygame.Rect(x, y, 64, 64)
