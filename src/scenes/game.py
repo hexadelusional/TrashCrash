@@ -113,11 +113,6 @@ def loop(scene, window):
 	Projectile.instances.update(scene.platforms)
 	if scene.framecount % 280 == 0 :
 		if len(scene.rock_list) < 5 :
-			val = randint(0,1)
-			x = [WINDOW_SIZE[0],0][val]
-			y = randint(350, 600)
-			dir = [-1,1][val]
-			width = randint(200,250)
 			rock_plat = MyRockPlatform(scene.plat_img, WINDOW_SIZE[0], scene.rock_list)
 			scene.player_platforms.add(rock_plat)
 			scene.rock_list.append(rock_plat)
