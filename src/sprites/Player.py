@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
 			particle.draw(window)
 		if self.throwing:
 			self.gauge.draw(window)
-			self.arrow.draw(window)
+			self.arrow.draw(window, self.mirror)
 
 	def animate(self):
 		sequence = self.animations[self.current_animation]
@@ -172,6 +172,4 @@ class Player(pygame.sprite.Sprite):
 		else:
 			self.throwing = False
 			self.set_animation('throw')
-			vel_x = (4 + 5 * self.gauge.value / 100) * (-1 if self.mirror else 1)
-			vel_y = -5 - 15 * self.gauge.value / 100
-			Projectile(self.rect.x, self.rect.y, vel_x, vel_y)
+			Projectile(self.rect.x, self.rect.y, self.gauge.value, self.arrow.angle, self.mirror)

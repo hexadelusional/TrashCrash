@@ -51,32 +51,34 @@ def on_enter(scene, settings):
 	scene.player_platforms = scene.platforms.copy()
 	scene.player_platforms.add(scene.middle_bound)
 	# Initialize players
-	scene.player1 = Player('pink', 1, 700, 100)
+	scene.player1 = Player('white', 1, 200, 100)
 	scene.player1_controls = {
 		pygame.KEYDOWN: {
-			pygame.K_j: partial(scene.player1.move, scene.player_platforms, 'left'),
-			pygame.K_l: partial(scene.player1.move, scene.player_platforms, 'right'),
-			pygame.K_i: partial(scene.player1.jump, scene.player_platforms),
-			pygame.K_o: partial(scene.player1.throw, scene.player_platforms)
+			pygame.K_a: partial(scene.player1.move, scene.player_platforms, 'left'),
+			pygame.K_d: partial(scene.player1.move, scene.player_platforms, 'right'),
+			pygame.K_w: partial(scene.player1.jump, scene.player_platforms),
+			pygame.K_e: partial(scene.player1.throw, scene.player_platforms)
 		},
 		pygame.KEYUP: {
-			pygame.K_j: partial(scene.player1.stop, 'left'),
-			pygame.K_l: partial(scene.player1.stop, 'right')
+			pygame.K_a: partial(scene.player1.stop, 'left'),
+			pygame.K_d: partial(scene.player1.stop, 'right')
 		}
 	}
-	scene.player2 = Player('white', 2, 200, 100)
+
+	scene.player2 = Player('pink', 2, 700, 100)
 	scene.player2_controls = {
 		pygame.KEYDOWN: {
-			pygame.K_a: partial(scene.player2.move, scene.player_platforms, 'left'),
-			pygame.K_d: partial(scene.player2.move, scene.player_platforms, 'right'),
-			pygame.K_w: partial(scene.player2.jump, scene.player_platforms),
-			pygame.K_e: partial(scene.player2.throw, scene.player_platforms)
+			pygame.K_j: partial(scene.player2.move, scene.player_platforms, 'left'),
+			pygame.K_l: partial(scene.player2.move, scene.player_platforms, 'right'),
+			pygame.K_i: partial(scene.player2.jump, scene.player_platforms),
+			pygame.K_o: partial(scene.player2.throw, scene.player_platforms)
 		},
 		pygame.KEYUP: {
-			pygame.K_a: partial(scene.player2.stop, 'left'),
-			pygame.K_d: partial(scene.player2.stop, 'right')
+			pygame.K_j: partial(scene.player2.stop, 'left'),
+			pygame.K_l: partial(scene.player2.stop, 'right')
 		}
 	}
+
 	scene.framecount = 0
 
 def loop(scene, window):
