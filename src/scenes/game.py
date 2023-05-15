@@ -12,6 +12,7 @@ from sprites.RockPlat import MyRockPlatform
 from sprites.Score import Score
 from sprites.Sky import Sky
 from sprites.Sound import Sound
+from sprites.Trash import Trash
 
 WINDOW_SIZE = (1280, 720)
 def on_enter(scene, settings):
@@ -36,6 +37,7 @@ def on_enter(scene, settings):
 	scene.platforms = pygame.sprite.Group()
 	scene.rock_list_left = []
 	scene.rock_list_right = []
+	scene.trashes = []
 	scene.floor = Floor(75, WINDOW_SIZE)
 	scene.left_bound = pygame.sprite.Sprite()
 	scene.left_bound.rect = pygame.Rect(-100, 0, 100, WINDOW_SIZE[1])
@@ -43,6 +45,8 @@ def on_enter(scene, settings):
 	scene.right_bound.rect = pygame.Rect(WINDOW_SIZE[0], 0, 100, WINDOW_SIZE[1])
 	scene.middle_bound = pygame.sprite.Sprite()
 	scene.middle_bound.rect = pygame.Rect(WINDOW_SIZE[0] / 2 - 5, 0, 10, WINDOW_SIZE[1])
+	 #TEST
+	#scene.test_img = pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Apple_core.png'), (60, 40))
 
 	scene.platforms.add(scene.left_bound)
 	scene.platforms.add(scene.right_bound)
@@ -118,6 +122,12 @@ def loop(scene, window):
 				scene.rock_list_right.append(rock_plat)
 	for rock_plat in scene.rock_list_left + scene.rock_list_right:
 		rock_plat.draw(window)
+	if len(scene.trashes) < 10 :
+		trash = Trash(WINDOW_SIZE[0])
+		scene.trashes.append(trash)
+	for trash in scene.trashes :
+		trash.draw(window)
+
 
 	# Update the game state
 	scene.player1.update(scene.player_platforms)
@@ -129,6 +139,9 @@ def loop(scene, window):
 	scene.player1.draw(window)
 	scene.player2.draw(window)
 	Projectile.instances.draw(window)
+	
+	 #TEST
+	#window.blit(scene.test_img, (300, 645 - 30, 50,30))
 
 	scene.score1.draw(window)
 	scene.score2.draw(window)
