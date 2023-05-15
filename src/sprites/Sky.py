@@ -2,8 +2,7 @@ import pygame
 
 class Sky():
 	def __init__(self, window_size):
-		self.image = pygame.image.load('assets/images/fond_1/mount1.png')
-		self.image = pygame.transform.scale(self.image, window_size)
+		self.image = pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount1.png'), window_size)
 		self.rect = self.image.get_rect()
 		self.image_asset = self.image.copy()
 		self.speed = 0.5
