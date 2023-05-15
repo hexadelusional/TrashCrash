@@ -1,4 +1,3 @@
-from random import randint
 import pygame
 
 BIN_DIMENSIONS = (80, 80)
