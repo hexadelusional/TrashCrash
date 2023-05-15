@@ -34,8 +34,8 @@ def on_enter(scene, settings):
 	scene.sky = Sky(WINDOW_SIZE)
 	scene.clouds = [Cloud(WINDOW_SIZE)]
 	scene.platforms = pygame.sprite.Group()
-	scene.rock_list = []
-	scene.plat_img = pygame.transform.scale(pygame.image.load('assets/images/rock_platforms/1.png'), (200, 65))
+	scene.rock_list_left = []
+	scene.rock_list_right = []
 	scene.floor = Floor(75, WINDOW_SIZE)
 	scene.left_bound = pygame.sprite.Sprite()
 	scene.left_bound.rect = pygame.Rect(-100, 0, 100, WINDOW_SIZE[1])
@@ -47,7 +47,6 @@ def on_enter(scene, settings):
 	scene.platforms.add(scene.left_bound)
 	scene.platforms.add(scene.right_bound)
 	scene.platforms.add(scene.floor)
-	scene.platforms.add(scene.bins)
 	scene.player_platforms = scene.platforms.copy()
 	scene.player_platforms.add(scene.middle_bound)
 	# Initialize players
@@ -110,15 +109,14 @@ def loop(scene, window):
 			scene.clouds.remove(cloud)
 	Projectile.instances.update(scene.platforms)
 	if scene.framecount % 280 == 0 :
-		if len(scene.rock_list) < 5 :
-			rock_plat = MyRockPlatform(scene.plat_img, WINDOW_SIZE[0], scene.rock_list)
+		if len(scene.rock_list_left) < 4 or len(scene.rock_list_right) < 4:
+			rock_plat = MyRockPlatform(WINDOW_SIZE[0], scene.rock_list_left, scene.rock_list_right)
 			scene.player_platforms.add(rock_plat)
-			scene.rock_list.append(rock_plat)
-	for rock_plat in scene.rock_list:
-		rock_plat.update()
-		if rock_plat.rect.right < 0 or rock_plat.rect.left > WINDOW_SIZE[0]:
-			scene.player_platforms.remove(rock_plat)
-			scene.rock_list.remove(rock_plat)
+			if not(rock_plat.side) : 
+				scene.rock_list_left.append(rock_plat)
+			else : 
+				scene.rock_list_right.append(rock_plat)
+	for rock_plat in scene.rock_list_left + scene.rock_list_right:
 		rock_plat.draw(window)
 
 	# Update the game state

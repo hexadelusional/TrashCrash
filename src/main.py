@@ -25,4 +25,5 @@ while running:
     for event in pygame.event.get(eventtype=pygame.QUIT):
         running = False
     switcher.loop()
+
 pygame.quit()
