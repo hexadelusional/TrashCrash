@@ -52,6 +52,8 @@ class Player(pygame.sprite.Sprite):
 		arrow_x = self.rect.x + self.rect.width + 5 if self.mirror else self.rect.x - 5
 		self.gauge.update(gauge_x, self.rect.y)
 		self.arrow.update(arrow_x, self.rect.y)
+		if self.rect.y > 720:
+			self.rect.y = 0
 		for particle in self.particles:
 			particle.update()
 			if particle.is_finished():
@@ -160,7 +162,6 @@ class Player(pygame.sprite.Sprite):
 			self.set_animation('idle')
 
 	def throw(self, platforms):
-		#part for the particle
 		if not self.is_on_ground(platforms):
 			return
 		if not self.throwing:
@@ -174,6 +175,3 @@ class Player(pygame.sprite.Sprite):
 			vel_x = (4 + 5 * self.gauge.value / 100) * (-1 if self.mirror else 1)
 			vel_y = -5 - 15 * self.gauge.value / 100
 			Projectile(self.rect.x, self.rect.y, vel_x, vel_y)
-
-
-

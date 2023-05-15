@@ -1,6 +1,4 @@
 from functools import partial
-from random import randint
-
 
 import pygame
 
@@ -11,34 +9,28 @@ from sprites.Floor import Floor
 from sprites.Player import Player
 from sprites.Projectile import Projectile
 from sprites.RockPlat import MyRockPlatform
-from sprites.Sky import Sky
 from sprites.Score import Score
+from sprites.Sky import Sky
 from sprites.Sound import Sound
 
 WINDOW_SIZE = (1280, 720)
 def on_enter(scene, settings):
 	print('New game started')
 	# Initialize game objects
-	scene.bin1 = Bin(0, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png'))
-	scene.bin1.rect = pygame.Rect(scene.bin1)
-	scene.bin2 = Bin(78, 570, 80, 80, pygame.image.load('assets/images/bins/bluebin.png'))
-	scene.bin2.rect = pygame.Rect(scene.bin2)
-	scene.bin3 = Bin(156, 570, 90, 90, pygame.image.load('assets/images/bins/yellowbin.png'))
-	scene.bin3.rect = pygame.Rect(scene.bin3)
-	scene.bin4 = Bin(1030, 570, 90, 90, pygame.image.load('assets/images/bins/yellowbin.png'))
-	scene.bin4.rect = pygame.Rect(scene.bin4)
-	scene.bin5 = Bin(1122, 570, 80, 80, pygame.image.load('assets/images/bins/bluebin.png'))
-	scene.bin5.rect = pygame.Rect(scene.bin5)
-	scene.bin6 = Bin(1200, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png'))
-	scene.bin6.rect = pygame.Rect(scene.bin6)
- 
+	scene.bins = [
+		# Left side
+		Bin(0, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png')),
+		Bin(78, 570, 80, 80, pygame.image.load('assets/images/bins/bluebin.png')),
+		Bin(156, 570, 90, 90, pygame.image.load('assets/images/bins/yellowbin.png')),
+		# Right side
+		Bin(1030, 570, 90, 90, pygame.image.load('assets/images/bins/yellowbin.png')),
+		Bin(1122, 570, 80, 80, pygame.image.load('assets/images/bins/bluebin.png')),
+		Bin(1200, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png'))
+	]
 	scene.score1 = Score(WINDOW_SIZE, 'left')
 	scene.score2 = Score(WINDOW_SIZE, 'right')
 	scene.music = Sound()
- #update les scores en mettant scene.score1.update pour update le score 1 précisément
-
-
-
+	
 	scene.sky = Sky(WINDOW_SIZE)
 	scene.clouds = [Cloud(WINDOW_SIZE)]
 	scene.platforms = pygame.sprite.Group()
@@ -55,12 +47,7 @@ def on_enter(scene, settings):
 	scene.platforms.add(scene.left_bound)
 	scene.platforms.add(scene.right_bound)
 	scene.platforms.add(scene.floor)
-	#scene.platforms.add(scene.bin1)
-	#scene.platforms.add(scene.bin2)
-	#scene.platforms.add(scene.bin3)
-	#scene.platforms.add(scene.bin4)
-	#scene.platforms.add(scene.bin5)
-	#scene.platforms.add(scene.bin6)
+	scene.platforms.add(scene.bins)
 	scene.player_platforms = scene.platforms.copy()
 	scene.player_platforms.add(scene.middle_bound)
 	# Initialize players
@@ -111,7 +98,6 @@ def loop(scene, window):
 		scene.player2.arrow.rotation(event)
 
 	# Secondary updates
-	#sky.update()
 	scene.sky.draw(window)
 	if scene.framecount % 240 == 0:
 		scene.clouds.append(Cloud(WINDOW_SIZE))
@@ -126,8 +112,11 @@ def loop(scene, window):
 			rock_plat = MyRockPlatform(scene.plat_img, WINDOW_SIZE[0], scene.rock_list)
 			scene.player_platforms.add(rock_plat)
 			scene.rock_list.append(rock_plat)
-	for rock_plat in scene.rock_list :
-		rock_plat.update(WINDOW_SIZE[0])
+	for rock_plat in scene.rock_list:
+		rock_plat.update()
+		if rock_plat.rect.right < 0 or rock_plat.rect.left > WINDOW_SIZE[0]:
+			scene.player_platforms.remove(rock_plat)
+			scene.rock_list.remove(rock_plat)
 		rock_plat.draw(window)
 
 	# Update the game state
@@ -135,12 +124,8 @@ def loop(scene, window):
 	scene.player2.update(scene.player_platforms)
 	# Draw game objects
 	window.blit(scene.floor.image, scene.floor.rect)
-	scene.bin1.draw(window)
-	scene.bin2.draw(window)
-	scene.bin3.draw(window)
-	scene.bin4.draw(window)
-	scene.bin5.draw(window)
-	scene.bin6.draw(window)
+	for bin in scene.bins:
+		bin.draw(window)
 	scene.player1.draw(window)
 	scene.player2.draw(window)
 	Projectile.instances.draw(window)

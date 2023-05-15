@@ -1,5 +1,3 @@
-from functools import partial
-
 import pygame
 
 from core.SceneSwitcher import SceneSwitcher
@@ -20,7 +18,7 @@ switcher = SceneSwitcher(window)
 switcher.add_scene('intro', intro_scene)
 switcher.add_scene('main_menu', main_menu_scene)
 switcher.add_scene('game', game_scene)
-switcher.switch_to('game',0)
+switcher.switch_to('intro')
 
 running = True
 while running:
