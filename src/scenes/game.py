@@ -19,13 +19,13 @@ def on_enter(scene, settings):
 	# Initialize game objects
 	scene.bins = [
 		# Left side
-		Bin(0, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png')),
-		Bin(78, 570, 80, 80, pygame.image.load('assets/images/bins/bluebin.png')),
-		Bin(156, 570, 90, 90, pygame.image.load('assets/images/bins/yellowbin.png')),
+		Bin(0, 570, 'red'),
+		Bin(78, 570, 'blue'),
+		Bin(156, 570, 'yellow'),
 		# Right side
-		Bin(1030, 570, 90, 90, pygame.image.load('assets/images/bins/yellowbin.png')),
-		Bin(1122, 570, 80, 80, pygame.image.load('assets/images/bins/bluebin.png')),
-		Bin(1200, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png'))
+		Bin(1030, 570, 'red'),
+		Bin(1122, 570, 'blue'),
+		Bin(1200, 570, 'yellow')
 	]
 	scene.score1 = Score(WINDOW_SIZE, 'left')
 	scene.score2 = Score(WINDOW_SIZE, 'right')

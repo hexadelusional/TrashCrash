@@ -1,36 +1,21 @@
 from random import randint
 import pygame
 
+BIN_DIMENSIONS = (80, 80)
+print('executed')
+IMAGES = {
+	'blue': pygame.transform.scale(pygame.image.load('assets/images/bins/blue.png'), BIN_DIMENSIONS),
+	'red': pygame.transform.scale(pygame.image.load('assets/images/bins/red.png'), BIN_DIMENSIONS),
+	'yellow': pygame.transform.scale(pygame.image.load('assets/images/bins/yellow.png'), BIN_DIMENSIONS)
+}
 
 class Bin (pygame.sprite.Sprite) :
-    def __init__(self, x, y, width, height, image):
-        super().__init__()
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-        self.rect.width = width
-        self.rect.height = height
-        '''
-        scaled_image=pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
-        self.image.blit(scaled_image, self.rect, (0, 0, self.rect.width, self.rect.height))
-        '''
-        
-        
-    def draw(self, window):
-        scaled_image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
-        #window.blit(scaled_image, self.rect, (0, 0, self.rect.width, self.rect.height))
-        window.blit(scaled_image, self.rect, (0, 0, self.rect.width, self.rect.height))
-        
-    '''def update(self): # pas encore nécessaire car pas d'update pour le moment 
-	    self.image.blit(self.image_asset, (self.x, 0))'''
-        
-        #self.rect=pygame.Rect(3,548,90,90)
-        #self.rect = pygame.Rect(x, y, 64, 64)
-		#self.image = pygame.Surface(Player.SPRITE_SIZE)
-  
-'''def draw(self, window):
-        scaled_image=pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
-        #window.blit(self.image, (self.rect.x, self.rect.y))
-        window.blit(scaled_image, self.rect, (0, 0, self.rect.width, self.rect.height))
-        '''
+	def __init__(self, x, y, color):
+		super().__init__()
+		self.image = IMAGES[color]
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+	   
+	def draw(self, window):
+		window.blit(self.image, self.rect, (0, 0, self.rect.width, self.rect.height))
