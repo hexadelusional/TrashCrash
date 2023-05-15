@@ -32,9 +32,9 @@ def on_enter(scene, settings):
 	scene.bin6 = Bin(1200, 570, 80, 80, pygame.image.load('assets/images/bins/redbin.png'))
 	scene.bin6.rect = pygame.Rect(scene.bin6)
  
-	scene.score1=Score(300,680)
-	scene.score2=Score(800,680)
-	scene.music= Sound()
+	scene.score1 = Score(WINDOW_SIZE, 'left')
+	scene.score2 = Score(WINDOW_SIZE, 'right')
+	scene.music = Sound()
  #update les scores en mettant scene.score1.update pour update le score 1 précisément
 
 
@@ -149,9 +149,7 @@ def loop(scene, window):
 	scene.player1.draw(window)
 	scene.player2.draw(window)
 	Projectile.instances.draw(window)
-	
 
- 
 	scene.score1.draw(window)
 	scene.score2.draw(window)
 

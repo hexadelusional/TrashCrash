@@ -3,7 +3,7 @@ from random import randint
 
 class Sound():
     def __init__(self): 
-        self.music= pygame.mixer_music.load(f"assets/sounds/game_music/{randint(0,2)}.mp3 ")
+        self.music= pygame.mixer_music.load(f"assets/sounds/game_music/0.mp3")
         self.music_volume=pygame.mixer.music.set_volume(0.25)
         self.music_play=pygame.mixer.music.play(loops=-1)
         self.footstep_sound=pygame.mixer.Sound("assets/sounds/footstep.wav")

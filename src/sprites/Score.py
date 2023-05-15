@@ -1,19 +1,18 @@
 import pygame
 pygame.init()
 class Score():
-    def __init__(self,x,y):
-        self.score = 0
-        self.x = x
-        self.y = y
-        self.font = pygame.font.Font(None, 50)
-        
-        
-    '''def update(self):
-        if #ball rentrée1:
-            self.score1+=1000
-        if #ball rentrée2:
-            self.score2+=1000'''
-        
-    def draw(self,window):
-        score_text = self.font.render(f'Player: {self.score}', True, (250,128,114)) #saumon color
-        window.blit(score_text, (self.x, self.y))
+	def __init__(self, window_size, position):
+		self.score = 0
+		self.y = 25
+		self.position = position
+		self.window_size = window_size
+		self.font = pygame.font.Font('assets/grobold.ttf', 32)
+		
+	def update(self, score):
+		self.score = score
+		
+	def draw(self,window):
+		score_str = '0' * (8 - len(str(self.score))) + str(self.score)
+		score_text = self.font.render(score_str, True, (255, 255, 255))
+		x = 25 if self.position == 'left' else self.window_size[0] - 25 - score_text.get_width()
+		window.blit(score_text, (x, self.y))
