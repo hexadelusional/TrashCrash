@@ -3,6 +3,7 @@ from sprites.Gauge import Gauge
 from sprites.Arrow import Arrow
 from sprites.Particle import Particle
 from sprites.Projectile import Projectile
+from sprites.Sound import Sound 
 
 class Player(pygame.sprite.Sprite):
 	SPRITE_SIZE = (32, 32)
@@ -40,6 +41,7 @@ class Player(pygame.sprite.Sprite):
 		}
 		self.current_animation = 'idle'
 		self.current_frame = 0
+		self.music= Sound() #we have to define the sound here to implement other sounds as jump1, jump2
 
 	def apply_gravity(self):
 		self.vel_y += self.acc_y
@@ -50,6 +52,8 @@ class Player(pygame.sprite.Sprite):
 		arrow_x = self.rect.x + self.rect.width + 5 if self.mirror else self.rect.x - 5
 		self.gauge.update(gauge_x, self.rect.y)
 		self.arrow.update(arrow_x, self.rect.y)
+		if self.rect.y > 720:
+			self.rect.y = 0
 		for particle in self.particles:
 			particle.update()
 			if particle.is_finished():
@@ -75,7 +79,7 @@ class Player(pygame.sprite.Sprite):
 			particle.draw(window)
 		if self.throwing:
 			self.gauge.draw(window)
-			self.arrow.draw(window)
+			self.arrow.draw(window, self.mirror)
 
 	def animate(self):
 		sequence = self.animations[self.current_animation]
@@ -104,11 +108,14 @@ class Player(pygame.sprite.Sprite):
 						self.rect.left = platform.rect.right
 					self.vel_x = 0
 				if direction == 'y':
-					if self.vel_y > 0:
+					if self.vel_y > 0 and self.rect.bottom >= platform.rect.top :
 						self.rect.bottom = platform.rect.top
-					elif self.vel_y < 0:
+					
+					elif self.vel_y < 0 :
 						self.rect.top = platform.rect.bottom
+					
 					self.vel_y = 0
+
 
 	def is_on_ground(self, platforms):
 		self.rect.y += 1
@@ -125,8 +132,10 @@ class Player(pygame.sprite.Sprite):
 		if self.throwing:
 			return
 		if self.is_on_ground(platforms):
+			self.music.jump1.play() #sound of 1st jump
 			self.vel_y = -10
 		elif self.can_double_jump:
+			self.music.jump2.play()
 			self.vel_y = -10
 			self.can_double_jump = False
 			self.particles.append(Particle('jump', self.rect.x, self.rect.y, 64, 64))
@@ -139,7 +148,9 @@ class Player(pygame.sprite.Sprite):
 		self.mirror = direction == 'left'
 		if self.is_on_ground(platforms):
 			self.particles.append(Particle('run', self.rect.x, self.rect.y, 64, 64, self.mirror))
+			self.music.footstep_sound.play()
 		self.set_animation('run')
+		
 
 	def stop(self, direction):
 		if self.throwing:
@@ -151,7 +162,6 @@ class Player(pygame.sprite.Sprite):
 			self.set_animation('idle')
 
 	def throw(self, platforms):
-		#part for the particle
 		if not self.is_on_ground(platforms):
 			return
 		if not self.throwing:
@@ -162,9 +172,4 @@ class Player(pygame.sprite.Sprite):
 		else:
 			self.throwing = False
 			self.set_animation('throw')
-			vel_x = (4 + 5 * self.gauge.value / 100) * (-1 if self.mirror else 1)
-			vel_y = -5 - 15 * self.gauge.value / 100
-			Projectile(self.rect.x, self.rect.y, vel_x, vel_y)
-
-
-
+			Projectile(self.rect.x, self.rect.y, self.gauge.value, self.arrow.angle, self.mirror)

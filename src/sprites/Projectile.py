@@ -1,22 +1,22 @@
 import pygame
-
+import math
 
 class Projectile(pygame.sprite.Sprite):
 	instances = pygame.sprite.Group()
-	def __init__(self, x, y, vel_x, vel_y):
+	def __init__(self, x, y, gauge_value, angle, mirror):
 		super().__init__()
 		self.image = pygame.image.load('assets/images/projectile.png')
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
-		self.vel_x = vel_x
-		self.vel_y = vel_y
-		self.acc_y = 0.5
+		self.acc_y = 0.5 # Gravity
+		self.vel_y = -(5 + (gauge_value / 100) * math.sin(angle * math.pi / 180) * 20)
+		self.vel_x = (5 + (gauge_value / 100) * math.cos(angle * math.pi / 180) * 5) * (-1 if mirror else 1)
 		Projectile.instances.add(self)
 
 	def apply_gravity(self):
 		self.vel_y += self.acc_y
-	
+
 	def collide(self, platforms, direction):
 		if direction == 'y':
 			for platform in platforms:

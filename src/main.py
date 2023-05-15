@@ -1,13 +1,9 @@
-from functools import partial
-
 import pygame
 
 from core.SceneSwitcher import SceneSwitcher
 from scenes.game import game_scene
 from scenes.intro import intro_scene
 from scenes.menu import main_menu_scene
-
-
 
 # Initialize game window
 mainClock = pygame.time.Clock()
