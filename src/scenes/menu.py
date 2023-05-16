@@ -9,21 +9,25 @@ from ui.MenuCharacterCard import MenuCharacterCard
 
 
 def on_enter(scene):
+	if not pygame.mixer.music.get_busy():
+		pygame.mixer.music.load('assets/music/menu.mp3')
+		pygame.mixer.music.play(-1)
 	scene.menu_section = 0
 	scene.ready = False
+	scene.bg = pygame.image.load('assets/ui/menu_background.png')
 	# Section 0 : Main menu
 	scene.logo = pygame.image.load('assets/logo.png')
 	scene.logo_rect = scene.logo.get_rect()
 	scene.logo_rect.centerx = 640
 	scene.logo_rect.y = 30
 	scene.play_btn = Button(390, 260, 'Play!', lambda: setattr(scene, 'menu_section', 1), 500)
-	scene.tutorial_btn = Button(390, 360, 'Tutorial', lambda: print('Tutorial'), 500)
+	scene.tutorial_btn = Button(390, 360, 'Credits', lambda: scene.switcher.switch_to('credits'), 500)
 	scene.quit_btn = Button(390, 460, 'Quit', quit, 500)
 	# Section 1 : Character select
 	# - Body
-	pink = Character('Pink', 'assets/ui/characters/pink.png', 'pygame sucks', {'strength': 0.4, 'speed': 0.8, 'weight': 0.5, 'accuracy': 0.94}, 'runs fast')
-	blue = Character('Blue', 'assets/ui/characters/blue.png', 'trash pygame', {'strength': 0.2, 'speed': 0.9, 'weight': 0.7, 'accuracy': 1}, 'jumps high')
-	white = Character('White', 'assets/ui/characters/white.png', 'laissez moi mourir', {'strength': 0.95, 'speed': 0.4, 'weight': 0.9, 'accuracy': 0.2}, 'zzccmxtp')
+	pink = Character('Pink', 'assets/ui/characters/pink.png', 'The Pink Bolt', {'strength': 0.4, 'speed': 0.8, 'weight': 0.5, 'accuracy': 0.94}, 'Runs fast')
+	blue = Character('Blue', 'assets/ui/characters/blue.png', 'The Blue Rabbit', {'strength': 0.2, 'speed': 0.9, 'weight': 0.7, 'accuracy': 1}, 'Jumps high')
+	white = Character('White', 'assets/ui/characters/white.png', 'The White Bodybuilder', {'strength': 0.95, 'speed': 0.4, 'weight': 0.9, 'accuracy': 0.2}, 'Throws hard')
 	scene.character_select = CharacterSelect([pink, blue, white])
 	scene.card1 = MenuCharacterCard(scene.character_select.characters[scene.character_select.p1_selection])
 	scene.card2 = MenuCharacterCard(scene.character_select.characters[scene.character_select.p2_selection], 'bottom')
@@ -47,7 +51,7 @@ def on_enter(scene):
 	scene.ready_rect.center = (640, 360)
 
 def on_loop(scene, window):
-	window.fill((0,0,0))
+	window.blit(scene.bg, (0, 0))
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:

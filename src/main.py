@@ -4,6 +4,7 @@ from core.SceneSwitcher import SceneSwitcher
 from scenes.game import game_scene
 from scenes.intro import intro_scene
 from scenes.menu import main_menu_scene
+from scenes.credits import credits_scene
 
 # Initialize game window
 mainClock = pygame.time.Clock()
@@ -17,6 +18,7 @@ pygame.display.set_icon(icon)
 switcher = SceneSwitcher(window)
 switcher.add_scene('intro', intro_scene)
 switcher.add_scene('main_menu', main_menu_scene)
+switcher.add_scene('credits', credits_scene)
 switcher.add_scene('game', game_scene)
 switcher.switch_to('intro')
 
