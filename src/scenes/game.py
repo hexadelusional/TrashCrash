@@ -12,6 +12,7 @@ from sprites.Platform import Platform
 from sprites.Score import Score
 from sprites.Sky import Sky
 from core.Sound import Sound
+from sprites.Trash import Trash
 
 WINDOW_SIZE = (1280, 720)
 def on_enter(scene, settings):
@@ -36,6 +37,8 @@ def on_enter(scene, settings):
 	scene.platforms = pygame.sprite.Group()
 	scene.rock_list_left = []
 	scene.rock_list_right = []
+	scene.trashes_left = []
+	scene.trashes_right = []
 	scene.floor = Floor(75, WINDOW_SIZE)
 	scene.left_bound = pygame.sprite.Sprite()
 	scene.left_bound.rect = pygame.Rect(-100, 0, 100, WINDOW_SIZE[1])
@@ -43,7 +46,6 @@ def on_enter(scene, settings):
 	scene.right_bound.rect = pygame.Rect(WINDOW_SIZE[0], 0, 100, WINDOW_SIZE[1])
 	scene.middle_bound = pygame.sprite.Sprite()
 	scene.middle_bound.rect = pygame.Rect(WINDOW_SIZE[0] / 2 - 5, 0, 10, WINDOW_SIZE[1])
-
 	scene.platforms.add(scene.left_bound)
 	scene.platforms.add(scene.right_bound)
 	scene.platforms.add(scene.floor)
@@ -108,16 +110,36 @@ def loop(scene, window):
 		if cloud.rect.right < 0:
 			scene.clouds.remove(cloud)
 	Projectile.instances.update(scene.platforms)
-	if scene.framecount % 280 == 0 :
-		if len(scene.rock_list_left) < 4 or len(scene.rock_list_right) < 4:
-			rock_plat = Platform(WINDOW_SIZE[0], scene.rock_list_left, scene.rock_list_right)
-			scene.player_platforms.add(rock_plat)
-			if not(rock_plat.side) : 
-				scene.rock_list_left.append(rock_plat)
-			else : 
-				scene.rock_list_right.append(rock_plat)
+	rock_plat1 = Platform(WINDOW_SIZE[0], 0, scene.rock_list_left, scene.rock_list_right)
+	scene.player_platforms.add(rock_plat1)
+	scene.rock_list_left.append(rock_plat1)
+	rock_plat2 = Platform(WINDOW_SIZE[0], 1, scene.rock_list_left, scene.rock_list_right)
+	scene.player_platforms.add(rock_plat2)
+	scene.rock_list_right.append(rock_plat2)
+	rock_plat3 = Platform(WINDOW_SIZE[0], 0, scene.rock_list_left, scene.rock_list_right)
+	scene.player_platforms.add(rock_plat3)
+	scene.rock_list_left.append(rock_plat3)
+	rock_plat4 = Platform(WINDOW_SIZE[0], 1, scene.rock_list_left, scene.rock_list_right)
+	scene.player_platforms.add(rock_plat4)
+	scene.rock_list_right.append(rock_plat4)
+	rock_plat5 = Platform(WINDOW_SIZE[0], 0, scene.rock_list_left, scene.rock_list_right)
+	scene.player_platforms.add(rock_plat5)
+	scene.rock_list_left.append(rock_plat5)
+	rock_plat6 = Platform(WINDOW_SIZE[0], 1, scene.rock_list_left, scene.rock_list_right)
+	scene.player_platforms.add(rock_plat6)
+	scene.rock_list_right.append(rock_plat6)
 	for rock_plat in scene.rock_list_left + scene.rock_list_right:
 		rock_plat.draw(window)
+	if scene.framecount % 50 == 0 :
+		if len(scene.trashes_left) < 5 or len(scene.trashes_right) < 5 :
+			trash = Trash(WINDOW_SIZE[0], scene.trashes_left, scene.trashes_right)
+			if not(trash.side) :
+				scene.trashes_left.append(trash)
+			else :
+				scene.trashes_right.append(trash)
+	for trash in scene.trashes_left + scene.trashes_right :
+		trash.draw(window)
+
 
 	# Update the game state
 	scene.player1.update(scene.player_platforms)
@@ -129,6 +151,7 @@ def loop(scene, window):
 	scene.player1.draw(window)
 	scene.player2.draw(window)
 	Projectile.instances.draw(window)
+	
 
 	scene.score1.draw(window)
 	scene.score2.draw(window)
