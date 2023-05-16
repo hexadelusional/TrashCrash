@@ -22,7 +22,7 @@ pygame.display.set_icon(icon)
 debug_font = pygame.font.SysFont('Arial', 20)
 
 # Variables to manage the background change
-background_delay = 1500  # milliseconds
+background_delay = 36000# milliseconds
 background_time  = 0    # when the background last changed
 backgrounds = [mountains_1, mountains_2, mountains_3, mountains_4, mountains_5]
 background_index = 0     # index of the currently used background

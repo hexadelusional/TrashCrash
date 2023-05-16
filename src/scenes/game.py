@@ -30,8 +30,14 @@ def on_enter(scene, settings):
 	scene.score1 = Score(WINDOW_SIZE, 'left')
 	scene.score2 = Score(WINDOW_SIZE, 'right')
 	scene.music = Sound()
-	
-	scene.sky = Sky(WINDOW_SIZE)
+
+
+	scene.sky = Sky('mount1')
+	scene.sky = Sky('mount2')
+	scene.sky = Sky('mount3')
+	scene.sky = Sky('mount4')
+	scene.sky = Sky('mount5')
+
 	scene.clouds = [Cloud(WINDOW_SIZE)]
 	scene.platforms = pygame.sprite.Group()
 	scene.rock_list_left = []

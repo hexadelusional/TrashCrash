@@ -1,8 +1,18 @@
 import pygame
 
+window_size = (1280, 720)
+MOUNTAINS = {
+	'mount1': pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount1.png'), window_size),
+	'mount2': pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount2.png'), window_size),
+	'mount3': pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount3.png'), window_size),
+	'mount4': pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount4.png'), window_size),
+	'mount5': pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount5.png'), window_size),
+}
+
 class Sky():
-	def __init__(self, window_size):
-		self.image = pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount1.png'), window_size)
+	def __init__(self, landscape):
+		super().__init__()
+		self.image = MOUNTAINS[landscape]
 		self.rect = self.image.get_rect()
 		self.image_asset = self.image.copy()
 		self.speed = 0.5
