@@ -59,7 +59,10 @@ def on_loop(scene, window):
 				if not scene.ready:
 					scene.ready = True
 				else:
-					scene.switcher.switch_to('game', {})
+					scene.switcher.switch_to('game', {
+						'p1': scene.character_select.characters[scene.character_select.p1_selection],
+						'p2': scene.character_select.characters[scene.character_select.p2_selection]
+					})
 					scene.ready = False
 					return
 

@@ -50,7 +50,7 @@ def on_enter(scene, settings):
 	scene.player_platforms = scene.platforms.copy()
 	scene.player_platforms.add(scene.middle_bound)
 	# Initialize players
-	scene.player1 = Player('white', 1, 200, 100)
+	scene.player1 = Player(settings['p1'].name, 1, 200, 100)
 	scene.player1_controls = {
 		pygame.KEYDOWN: {
 			pygame.K_a: partial(scene.player1.move, scene.player_platforms, 'left'),
@@ -64,7 +64,7 @@ def on_enter(scene, settings):
 		}
 	}
 
-	scene.player2 = Player('pink', 2, 700, 100)
+	scene.player2 = Player(settings['p2'].name, 2, 700, 100)
 	scene.player2_controls = {
 		pygame.KEYDOWN: {
 			pygame.K_j: partial(scene.player2.move, scene.player_platforms, 'left'),
