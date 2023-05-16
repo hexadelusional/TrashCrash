@@ -16,8 +16,8 @@ def on_loop(scene, window):
 	
 	window.blit(scene.bg, (0, 0))
 	text = scene.font.render('Credits', True, (255, 255, 255))
-	window.blit(text, (10, 10))
+	window.blit(text, (210, 300))
 	text = scene.font.render('iri paul coco adele maxime ^^', True, (255, 255, 255))
-	window.blit(text, (10, 40))
+	window.blit(text, (210, 340))
 
 credits_scene = Scene(on_enter, on_loop)
