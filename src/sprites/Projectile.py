@@ -1,6 +1,7 @@
 import pygame
 import math
 
+
 class Projectile(pygame.sprite.Sprite):
 	instances = pygame.sprite.Group()
 	def __init__(self, x, y, gauge_value, angle, mirror):
