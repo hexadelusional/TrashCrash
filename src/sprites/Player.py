@@ -19,6 +19,8 @@ class Player(pygame.sprite.Sprite):
 		self.acc_y = 0.5 # Gravity factor
 		self.can_double_jump = True
 		self.mirror = False
+		self.has_trash = False
+		self.held_trash = None
 		self.throwing = False
 		self.animation_speed = 8
 		self.particles = []
@@ -173,3 +175,14 @@ class Player(pygame.sprite.Sprite):
 			self.throwing = False
 			self.set_animation('throw')
 			Projectile(self.rect.x, self.rect.y, self.gauge.value, self.arrow.angle, self.mirror)
+			self.has_trash = False
+
+	def pick_trash(self, trash, trash_list, trash_group) :
+		if not self.has_trash :
+			self.has_trash = True
+			self.held_trash = trash
+			trash_list.remove(trash)
+			trash_group.remove(trash)
+
+
+		
