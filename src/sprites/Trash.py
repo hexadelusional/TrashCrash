@@ -13,7 +13,7 @@ trash_list = [
 	{"name" : "Glass", "bin" : "yellow", "img" : pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Glass.png'),(35,50) )},
 	{"name" : "Gum", "bin" : "blue", "img" : pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Gum.png'),(30,20)) },
 	{"name" : "Jar", "bin" : "yellow", "img" : pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Jar.png'),(32,50) )},
-	{"name" : "Kiwi", "bin" : "red", "img" : pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Kiwi.png'),(56,56) )},
+	{"name" : "Kiwi", "bin" : "red", "img" : pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Kiwi.png'),(28,28) )},
 	{"name" : "Laundry_bottle", "bin" : "yellow", "img" : pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Laundry_Bottle.png'),(42,55)) },
 	{"name" : "Lighter", "bin" : "blue", "img" : pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Lighter.png'),(16,54) )},
 	{"name" : "Mask", "bin" : "blue", "img" : pygame.transform.scale(pygame.image.load('assets/images/Trash_PNG/Mask.png'),(70,50) )},
@@ -54,6 +54,7 @@ class Trash(pygame.sprite.Sprite):
         self.bin = trash_list[val]["bin"]
         self.rect.x = randint(bounds[self.side][0], bounds[self.side][1])
         self.rect.y = 645 - self.rect.height
+        self.name = trash_list[val]["name"]
         
 
     def draw(self, window):

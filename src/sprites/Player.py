@@ -166,16 +166,19 @@ class Player(pygame.sprite.Sprite):
 	def throw(self, platforms):
 		if not self.is_on_ground(platforms):
 			return
-		if not self.throwing:
+		if not self.throwing and self.has_trash :
 			self.stop('left')
 			self.stop('right')
 			self.throwing = True
 			self.set_animation('pre_throw', 24)
-		else:
+		elif self.throwing and self.has_trash:
+			self.has_trash = False
 			self.throwing = False
 			self.set_animation('throw')
-			Projectile(self.rect.x, self.rect.y, self.gauge.value, self.arrow.angle, self.mirror)
-			self.has_trash = False
+			Projectile(self.rect.x, self.rect.y, self.gauge.value, self.arrow.angle, self.mirror, self.held_trash)
+		else :
+			return
+			
 
 	def pick_trash(self, trash, trash_list, trash_group) :
 		if not self.has_trash :
