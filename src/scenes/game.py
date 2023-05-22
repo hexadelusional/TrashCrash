@@ -138,7 +138,7 @@ def loop(scene, window):
 
 	# UPDATES
 	if scene.paused:
-		main_mixer.set_volume(0.5)
+		main_mixer.set_volume(0.3)
 	else:
 		main_mixer.set_volume(1)
 		scene.framecount += 1
