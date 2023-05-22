@@ -79,13 +79,13 @@ def on_enter(scene, settings):
 	scene.player1 = Player(settings['p1'].name, 1, 200, 100)
 	scene.player1_controls = {
 		pygame.KEYDOWN: {
-			pygame.K_a: partial(scene.player1.move, scene.player_platforms, 'left'),
+			pygame.K_q: partial(scene.player1.move, scene.player_platforms, 'left'),
 			pygame.K_d: partial(scene.player1.move, scene.player_platforms, 'right'),
-			pygame.K_w: partial(scene.player1.jump, scene.player_platforms),
+			pygame.K_z: partial(scene.player1.jump, scene.player_platforms),
 			pygame.K_e: partial(scene.player1.throw, scene.player_platforms),
 		},
 		pygame.KEYUP: {
-			pygame.K_a: partial(scene.player1.stop, 'left'),
+			pygame.K_q: partial(scene.player1.stop, 'left'),
 			pygame.K_d: partial(scene.player1.stop, 'right')
 		}
 	}
