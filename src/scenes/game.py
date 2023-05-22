@@ -18,7 +18,6 @@ from ui.Button import Button
 
 WINDOW_SIZE = (1280, 720)
 def on_enter(scene, settings):
-	print('New game started')
 	# Initialize game objects
 	scene.bins = [
 		# Left side
@@ -29,6 +28,12 @@ def on_enter(scene, settings):
 		Bin(1030, 570, 'red', 1),
 		Bin(1122, 570, 'blue', 1),
 		Bin(1200, 570, 'yellow', 1)
+	]
+	scene.history = [
+		# Format : [(trash, bin type / ground), ...]
+		# Allows us to compile at the end how many trash ended-up in the right bin, wrong bin, or on the ground, for each player.
+		[], # Player 1
+		[] # Player 2
 	]
 	scene.paused = False
 	scene.timer = Timer(180)
@@ -139,6 +144,12 @@ def loop(scene, window):
 		scene.framecount += 1
 		if scene.framecount % 60 == 0:
 			scene.timer.update()
+			if scene.timer.seconds <= 0:
+				scene.switcher.switch_to('endgame', {
+					'history': scene.history,
+					'score1': scene.player1.score.value,
+					'score2': scene.player2.score.value
+				})
 		if scene.framecount % 240 == 0:
 			scene.clouds.append(Cloud(WINDOW_SIZE))
 		for cloud in scene.clouds:
@@ -146,7 +157,7 @@ def loop(scene, window):
 			cloud.draw(window)
 			if cloud.rect.right < 0:
 				scene.clouds.remove(cloud)
-		Projectile.instances.update(scene.platforms, scene.bins, [scene.player1, scene.player2])
+		Projectile.instances.update(scene.platforms, scene.bins, [scene.player1, scene.player2], scene.history)
 		if scene.framecount % 50 == 0 :
 			if len(scene.trashes_left) < 5 or len(scene.trashes_right) < 5 :
 				trash = Trash(WINDOW_SIZE[0], scene.trashes_left, scene.trashes_right)

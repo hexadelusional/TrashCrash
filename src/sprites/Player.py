@@ -205,7 +205,8 @@ class Player(pygame.sprite.Sprite):
 		if not self.has_trash :
 			self.has_trash = True
 			self.held_trash = trash
-			trash_list.remove(trash)
+			if trash in trash_list:
+				trash_list.remove(trash)
 			trash_group.remove(trash)
 
 

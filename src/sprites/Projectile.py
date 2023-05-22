@@ -45,7 +45,7 @@ class Projectile(pygame.sprite.Sprite):
 					self.vel_x = -self.vel_x * 0.5
 
 
-	def update(self, platforms, bins, players):
+	def update(self, platforms, bins, players, history):
 		self.apply_gravity()
 		self.rect.x += self.vel_x
 		self.collide(platforms, 'x')
@@ -55,13 +55,14 @@ class Projectile(pygame.sprite.Sprite):
 			score = bin.collide_with_projectile(self)
 			if score != 0:
 				players[bin.scores_toward - 1].score.increment(score)
+				history[self.thrown_by - 1].append((self.trash, bin.color))
 				Projectile.instances.remove(self)
 				self.kill()
 		if self.vel_y == self.vel_x == 0:
 			Projectile.instances.remove(self)
+			history[self.thrown_by - 1].append((self.trash, 'ground'))
 			self.kill()
 			players[self.thrown_by - 1].score.increment(- 100)
 
-	
 	def draw(self, window):
 		window.blit(self.image, (self.rect.x, self.rect.y))
