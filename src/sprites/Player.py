@@ -3,7 +3,7 @@ from sprites.Gauge import Gauge
 from sprites.Arrow import Arrow
 from sprites.Particle import Particle
 from sprites.Projectile import Projectile
-from core.Sound import Sound
+from core.Mixer import main_mixer
 from sprites.Score import Score
 
 WINDOW_SIZE = (1280, 720)
@@ -48,7 +48,6 @@ class Player(pygame.sprite.Sprite):
 		self.arrow = Arrow(self.rect.x, self.rect.y, self.id)
 		self.current_animation = 'idle'
 		self.current_frame = 0
-		self.music = Sound() #we have to define the sound here to implement other sounds as jump1, jump2
 
 	def apply_gravity(self):
 		self.vel_y += self.acc_y
@@ -157,10 +156,10 @@ class Player(pygame.sprite.Sprite):
 		if self.throwing:
 			return
 		if self.is_on_ground(platforms):
-			self.music.jump1.play() #sound of 1st jump
+			main_mixer.play_sound('jump1')
 			self.vel_y = -10
 		elif self.can_double_jump:
-			self.music.jump2.play()
+			main_mixer.play_sound('jump2')
 			self.vel_y = -10
 			self.can_double_jump = False
 			self.particles.append(Particle('jump', self.rect.x, self.rect.y, 64, 64))
@@ -173,7 +172,6 @@ class Player(pygame.sprite.Sprite):
 		self.mirror = direction == 'left'
 		if self.is_on_ground(platforms):
 			self.particles.append(Particle('run', self.rect.x, self.rect.y, 64, 64, self.mirror))
-			self.music.footstep_sound.play()
 		self.set_animation('run')
 		
 

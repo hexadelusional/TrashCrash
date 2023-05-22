@@ -2,7 +2,6 @@ import pygame
 
 from core.Scene import Scene
 
-
 def on_enter(scene):
 	scene.efrei_card = pygame.image.load('assets/ui/efrei.png')
 	scene.efrei_card = scene.efrei_card.convert_alpha()

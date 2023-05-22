@@ -6,12 +6,13 @@ from core.Scene import Scene
 from ui.Button import Button
 from ui.CharacterSelect import CharacterSelect
 from ui.MenuCharacterCard import MenuCharacterCard
+from core.Mixer import main_mixer
 
 
 def on_enter(scene):
-	if not pygame.mixer.music.get_busy():
-		pygame.mixer.music.load('assets/music/menu.mp3')
-		pygame.mixer.music.play(-1)
+	if main_mixer.music != 'menu':
+		main_mixer.play_music('menu', 'assets/music/menu.mp3')
+		main_mixer.set_volume(1)
 	scene.menu_section = 0
 	scene.ready = False
 	scene.bg = pygame.image.load('assets/ui/menu_background.png')

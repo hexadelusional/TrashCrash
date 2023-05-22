@@ -2,16 +2,16 @@ from functools import partial
 
 import pygame
 
+from core.Mixer import main_mixer
 from core.Scene import Scene
 from sprites.Bin import Bin
 from sprites.Cloud import Cloud
 from sprites.Floor import Floor
+from sprites.Platform import Platform
 from sprites.Player import Player
 from sprites.Projectile import Projectile
-from sprites.Platform import Platform
 from sprites.Score import Score
 from sprites.Sky import Sky
-from core.Sound import Sound
 from sprites.Trash import Trash
 from ui.Button import Button
 
@@ -30,7 +30,6 @@ def on_enter(scene, settings):
 		Bin(1200, 570, 'yellow', 1)
 	]
 	scene.paused = False
-	scene.music = Sound()
 	scene.trash_group = pygame.sprite.Group()
 	scene.sky = Sky(WINDOW_SIZE)
 	scene.clouds = [Cloud(WINDOW_SIZE)]
@@ -108,6 +107,7 @@ def on_enter(scene, settings):
 	scene.pause_quit = Button(490, 400, 'Quit', partial(scene.switcher.switch_to, 'main_menu'), width=300, font_size=32)
 
 	scene.framecount = 0
+	main_mixer.play_music('ingame', 'assets/music/ingame.mp3', 1000)
 
 def loop(scene, window):
 	# Handle events
@@ -130,7 +130,10 @@ def loop(scene, window):
 			scene.paused = not scene.paused
 
 	# UPDATES
-	if not scene.paused:
+	if scene.paused:
+		main_mixer.set_volume(0.5)
+	else:
+		main_mixer.set_volume(1)
 		scene.framecount += 1
 		if scene.framecount % 240 == 0:
 			scene.clouds.append(Cloud(WINDOW_SIZE))
