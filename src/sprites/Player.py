@@ -4,7 +4,9 @@ from sprites.Arrow import Arrow
 from sprites.Particle import Particle
 from sprites.Projectile import Projectile
 from core.Sound import Sound
+from sprites.Score import Score
 
+WINDOW_SIZE = (1280, 720)
 PLAYER_ANIMATIONS = {}
 def get_animation_frames(skin, animation):
 	if animation == 'pre_throw':
@@ -35,6 +37,7 @@ class Player(pygame.sprite.Sprite):
 		self.vel_y = 0
 		self.acc_y = 0.5 # Gravity factor
 		self.can_double_jump = True
+		self.score = Score(WINDOW_SIZE, 'left' if self.id == 1 else 'right')
 		self.mirror = False
 		self.has_trash = False
 		self.held_trash = None
@@ -195,7 +198,7 @@ class Player(pygame.sprite.Sprite):
 			self.has_trash = False
 			self.throwing = False
 			self.set_animation('throw')
-			Projectile(self.rect.x, self.rect.y, self.gauge.value, self.arrow.angle, self.mirror, self.held_trash)
+			Projectile(self.rect.x, self.rect.y, self.id, self.gauge.value, self.arrow.angle, self.mirror, self.held_trash)
 		else :
 			return
 			

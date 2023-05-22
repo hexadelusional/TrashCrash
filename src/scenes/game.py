@@ -20,16 +20,14 @@ def on_enter(scene, settings):
 	# Initialize game objects
 	scene.bins = [
 		# Left side
-		Bin(0, 570, 'red'),
-		Bin(78, 570, 'blue'),
-		Bin(156, 570, 'yellow'),
+		Bin(0, 570, 'red', 2),
+		Bin(78, 570, 'blue', 2),
+		Bin(156, 570, 'yellow', 2),
 		# Right side
-		Bin(1030, 570, 'red'),
-		Bin(1122, 570, 'blue'),
-		Bin(1200, 570, 'yellow')
+		Bin(1030, 570, 'red', 1),
+		Bin(1122, 570, 'blue', 1),
+		Bin(1200, 570, 'yellow', 1)
 	]
-	scene.score1 = Score(WINDOW_SIZE, 'left')
-	scene.score2 = Score(WINDOW_SIZE, 'right')
 	scene.music = Sound()
 	scene.trash_group = pygame.sprite.Group()
 	scene.sky = Sky(WINDOW_SIZE)
@@ -127,7 +125,7 @@ def loop(scene, window):
 		cloud.draw(window)
 		if cloud.rect.right < 0:
 			scene.clouds.remove(cloud)
-	Projectile.instances.update(scene.platforms)
+	Projectile.instances.update(scene.platforms, scene.bins, [scene.player1, scene.player2])
 	for rock_plat in scene.rock_list_left + scene.rock_list_right:
 		rock_plat.draw(window)
 	if scene.framecount % 50 == 0 :
@@ -160,10 +158,10 @@ def loop(scene, window):
 	scene.player2.draw(window)
 	scene.player1.draw_inventory(window)
 	scene.player2.draw_inventory(window)
+	scene.player1.score.draw(window)
+	scene.player2.score.draw(window)
 	Projectile.instances.draw(window)
 	
 
-	scene.score1.draw(window)
-	scene.score2.draw(window)
 
 game_scene = Scene(on_enter, loop)

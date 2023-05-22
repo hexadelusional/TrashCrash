@@ -8,11 +8,12 @@ class Score():
 		self.window_size = window_size
 		self.font = pygame.font.Font('assets/grobold.ttf', 32)
 		
-	def update(self, score):
-		self.score = score
+	def increment(self, amount):
+		self.score += amount
 		
 	def draw(self,window):
-		score_str = '0' * (8 - len(str(self.score))) + str(self.score)
+		negative = self.score < 0
+		score_str = ('-' if negative else '0') + '0' * (7 - len(str(abs(self.score)))) + str(abs(self.score))
 		score_text = self.font.render(score_str, True, (255, 255, 255))
 		x = 25 if self.position == 'left' else self.window_size[0] - 25 - score_text.get_width()
 		window.blit(score_text, (x, self.y))
