@@ -158,6 +158,8 @@ def loop(scene, window):
 		bin.draw(window)
 	scene.player1.draw(window)
 	scene.player2.draw(window)
+	scene.player1.draw_inventory(window)
+	scene.player2.draw_inventory(window)
 	Projectile.instances.draw(window)
 	
 

@@ -85,6 +85,24 @@ class Player(pygame.sprite.Sprite):
 			self.gauge.draw(window)
 			self.arrow.draw(window, self.mirror)
 
+	def draw_inventory(self, window):
+		x = 50 if self.id == 1 else (1280 - 100)
+		SIZE = 50
+		dimmed_rect = pygame.Surface((SIZE - 3, SIZE - 3))
+		dimmed_rect.set_alpha(100)
+		dimmed_rect.fill((0, 0, 0))
+		window.blit(dimmed_rect, (x + 2, 100 + 2))
+		pygame.draw.rect(window, (255, 255, 255), (x, 100, SIZE, SIZE), width=3, border_radius=5)
+
+		if self.has_trash:
+			w_ratio = 40 / self.held_trash.rect.width
+			h_ratio = 40 / self.held_trash.rect.height
+			ratio = min(w_ratio, h_ratio)
+			scaled_image = pygame.transform.scale(self.held_trash.image, (int(self.held_trash.rect.width * ratio), int(self.held_trash.rect.height * ratio)))
+			window.blit(scaled_image, (x + 5, 105))
+			text = pygame.font.SysFont('Arial', 12).render(str(self.held_trash.name), True, (255, 255, 255))
+			window.blit(text, (x + 25 - text.get_width() / 2, 155))
+
 	def animate(self):
 		sequence = get_animation_frames(self.skin, self.current_animation)
 		self.image.fill((0, 0, 0, 0))
