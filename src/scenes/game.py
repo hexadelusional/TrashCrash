@@ -38,7 +38,7 @@ def on_enter(scene, settings):
 	scene.paused = False
 	scene.timer = Timer(180)
 	scene.trash_group = pygame.sprite.Group()
-	scene.sky = Sky(WINDOW_SIZE)
+	scene.sky = Sky()
 	scene.clouds = [Cloud(WINDOW_SIZE)]
 	scene.platforms = pygame.sprite.Group()
 	scene.rock_list_left = []
@@ -142,6 +142,8 @@ def loop(scene, window):
 	else:
 		main_mixer.set_volume(1)
 		scene.framecount += 1
+		if scene.framecount % (60 * 36) == 0:
+			scene.sky.update()
 		if scene.framecount % 60 == 0:
 			scene.timer.update()
 			if scene.timer.seconds <= 0:
