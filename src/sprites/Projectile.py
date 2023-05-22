@@ -5,9 +5,9 @@ IMAGE = pygame.image.load('assets/images/projectile.png')
 
 class Projectile(pygame.sprite.Sprite):
 	instances = pygame.sprite.Group()
-	def __init__(self, x, y, gauge_value, angle, mirror):
+	def __init__(self, x, y, gauge_value, angle, mirror, trash):
 		super().__init__()
-		self.image = IMAGE.copy()
+		self.image = trash.image
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y

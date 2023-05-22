@@ -31,7 +31,7 @@ def on_enter(scene, settings):
 	scene.score1 = Score(WINDOW_SIZE, 'left')
 	scene.score2 = Score(WINDOW_SIZE, 'right')
 	scene.music = Sound()
-	
+	scene.trash_group = pygame.sprite.Group()
 	scene.sky = Sky(WINDOW_SIZE)
 	scene.clouds = [Cloud(WINDOW_SIZE)]
 	scene.platforms = pygame.sprite.Group()
@@ -133,12 +133,20 @@ def loop(scene, window):
 	if scene.framecount % 50 == 0 :
 		if len(scene.trashes_left) < 5 or len(scene.trashes_right) < 5 :
 			trash = Trash(WINDOW_SIZE[0], scene.trashes_left, scene.trashes_right)
+			scene.trash_group.add(trash)
 			if not(trash.side) :
 				scene.trashes_left.append(trash)
 			else :
 				scene.trashes_right.append(trash)
-	for trash in scene.trashes_left + scene.trashes_right :
-		trash.draw(window)
+
+	trash_collision_left =  pygame.sprite.spritecollide(scene.player1, scene.trash_group, False)
+	for trash in trash_collision_left :
+		scene.player1.pick_trash(trash, scene.trashes_left, scene.trash_group)
+	trash_collision_right = pygame.sprite.spritecollide(scene.player2, scene.trash_group, False)
+	for trash in trash_collision_right :
+		scene.player2.pick_trash(trash,scene.trashes_right, scene.trash_group)
+
+	scene.trash_group.draw(window)
 
 
 	# Update the game state
