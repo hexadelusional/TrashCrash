@@ -6,12 +6,13 @@ from core.Scene import Scene
 from ui.Button import Button
 from ui.CharacterSelect import CharacterSelect
 from ui.MenuCharacterCard import MenuCharacterCard
+from core.Mixer import main_mixer
 
 
 def on_enter(scene):
-	if not pygame.mixer.music.get_busy():
-		pygame.mixer.music.load('assets/music/menu.mp3')
-		pygame.mixer.music.play(-1)
+	if main_mixer.music != 'menu':
+		main_mixer.play_music('menu', 'assets/music/menu.mp3')
+		main_mixer.set_volume(1)
 	scene.menu_section = 0
 	scene.ready = False
 	scene.bg = pygame.image.load('assets/ui/menu_background.png')
@@ -21,8 +22,9 @@ def on_enter(scene):
 	scene.logo_rect.centerx = 640
 	scene.logo_rect.y = 30
 	scene.play_btn = Button(390, 260, 'Play!', lambda: setattr(scene, 'menu_section', 1), 500)
-	scene.tutorial_btn = Button(390, 360, 'Credits', lambda: scene.switcher.switch_to('credits'), 500)
-	scene.quit_btn = Button(390, 460, 'Quit', quit, 500)
+	scene.tutorial_btn = Button(390, 360, 'How to play', lambda: scene.switcher.switch_to('tutorial'), 500)
+	scene.credits_btn = Button(390, 460, 'Credits', lambda: scene.switcher.switch_to('credits'), 500)
+	scene.quit_btn = Button(390, 560, 'Quit', quit, 500)
 	# Section 1 : Character select
 	# - Body
 	pink = Character('Pink', 'assets/ui/characters/pink.png', 'The Pink Bolt', {'strength': 0.4, 'speed': 0.8, 'weight': 0.5, 'accuracy': 0.94}, 'Runs fast')
@@ -73,6 +75,7 @@ def on_loop(scene, window):
 		if scene.menu_section == 0:
 			scene.play_btn.update(event)
 			scene.tutorial_btn.update(event)
+			scene.credits_btn.update(event)
 			scene.quit_btn.update(event)
 		else:
 			scene.character_select.handle_input(event)
@@ -83,6 +86,7 @@ def on_loop(scene, window):
 		window.blit(scene.logo, scene.logo_rect)
 		scene.play_btn.draw(window)
 		scene.tutorial_btn.draw(window)
+		scene.credits_btn.draw(window)
 		scene.quit_btn.draw(window)
 	else:
 		scene.character_select.draw(window)

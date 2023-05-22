@@ -3,8 +3,10 @@ from sprites.Gauge import Gauge
 from sprites.Arrow import Arrow
 from sprites.Particle import Particle
 from sprites.Projectile import Projectile
-from core.Sound import Sound
+from core.Mixer import main_mixer
+from sprites.Score import Score
 
+WINDOW_SIZE = (1280, 720)
 PLAYER_ANIMATIONS = {}
 def get_animation_frames(skin, animation):
 	if animation == 'pre_throw':
@@ -35,7 +37,10 @@ class Player(pygame.sprite.Sprite):
 		self.vel_y = 0
 		self.acc_y = 0.5 # Gravity factor
 		self.can_double_jump = True
+		self.score = Score(WINDOW_SIZE, 'left' if self.id == 1 else 'right')
 		self.mirror = False
+		self.has_trash = False
+		self.held_trash = None
 		self.throwing = False
 		self.animation_speed = 8
 		self.particles = []
@@ -43,7 +48,6 @@ class Player(pygame.sprite.Sprite):
 		self.arrow = Arrow(self.rect.x, self.rect.y, self.id)
 		self.current_animation = 'idle'
 		self.current_frame = 0
-		self.music = Sound() #we have to define the sound here to implement other sounds as jump1, jump2
 
 	def apply_gravity(self):
 		self.vel_y += self.acc_y
@@ -82,6 +86,24 @@ class Player(pygame.sprite.Sprite):
 		if self.throwing:
 			self.gauge.draw(window)
 			self.arrow.draw(window, self.mirror)
+
+	def draw_inventory(self, window):
+		x = 50 if self.id == 1 else (1280 - 100)
+		SIZE = 50
+		dimmed_rect = pygame.Surface((SIZE - 3, SIZE - 3))
+		dimmed_rect.set_alpha(100)
+		dimmed_rect.fill((0, 0, 0))
+		window.blit(dimmed_rect, (x + 2, 100 + 2))
+		pygame.draw.rect(window, (255, 255, 255), (x, 100, SIZE, SIZE), width=3, border_radius=5)
+
+		if self.has_trash:
+			w_ratio = 40 / self.held_trash.rect.width
+			h_ratio = 40 / self.held_trash.rect.height
+			ratio = min(w_ratio, h_ratio)
+			scaled_image = pygame.transform.scale(self.held_trash.image, (int(self.held_trash.rect.width * ratio), int(self.held_trash.rect.height * ratio)))
+			window.blit(scaled_image, (x + 5, 105))
+			text = pygame.font.SysFont('Arial', 12).render(str(self.held_trash.name), True, (255, 255, 255))
+			window.blit(text, (x + 25 - text.get_width() / 2, 155))
 
 	def animate(self):
 		sequence = get_animation_frames(self.skin, self.current_animation)
@@ -134,10 +156,10 @@ class Player(pygame.sprite.Sprite):
 		if self.throwing:
 			return
 		if self.is_on_ground(platforms):
-			self.music.jump1.play() #sound of 1st jump
+			main_mixer.play_sound('jump1')
 			self.vel_y = -10
 		elif self.can_double_jump:
-			self.music.jump2.play()
+			main_mixer.play_sound('jump2')
 			self.vel_y = -10
 			self.can_double_jump = False
 			self.particles.append(Particle('jump', self.rect.x, self.rect.y, 64, 64))
@@ -150,7 +172,6 @@ class Player(pygame.sprite.Sprite):
 		self.mirror = direction == 'left'
 		if self.is_on_ground(platforms):
 			self.particles.append(Particle('run', self.rect.x, self.rect.y, 64, 64, self.mirror))
-			self.music.footstep_sound.play()
 		self.set_animation('run')
 		
 
@@ -166,12 +187,27 @@ class Player(pygame.sprite.Sprite):
 	def throw(self, platforms):
 		if not self.is_on_ground(platforms):
 			return
-		if not self.throwing:
+		if not self.throwing and self.has_trash :
 			self.stop('left')
 			self.stop('right')
 			self.throwing = True
 			self.set_animation('pre_throw', 24)
-		else:
+		elif self.throwing and self.has_trash:
+			self.has_trash = False
 			self.throwing = False
 			self.set_animation('throw')
-			Projectile(self.rect.x, self.rect.y, self.gauge.value, self.arrow.angle, self.mirror)
+			Projectile(self.rect.x, self.rect.y, self.id, self.gauge.value, self.arrow.angle, self.mirror, self.held_trash)
+		else :
+			return
+			
+
+	def pick_trash(self, trash, trash_list, trash_group) :
+		if not self.has_trash :
+			self.has_trash = True
+			self.held_trash = trash
+			if trash in trash_list:
+				trash_list.remove(trash)
+			trash_group.remove(trash)
+
+
+		

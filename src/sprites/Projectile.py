@@ -5,9 +5,11 @@ IMAGE = pygame.image.load('assets/images/projectile.png')
 
 class Projectile(pygame.sprite.Sprite):
 	instances = pygame.sprite.Group()
-	def __init__(self, x, y, gauge_value, angle, mirror):
+	def __init__(self, x, y, id, gauge_value, angle, mirror, trash):
 		super().__init__()
-		self.image = IMAGE.copy()
+		self.image = trash.image
+		self.trash = trash
+		self.thrown_by = id
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
@@ -31,6 +33,8 @@ class Projectile(pygame.sprite.Sprite):
 					self.vel_x *= 0.5
 					if abs(self.vel_y) < 1.2:
 						self.vel_y = 0
+					if abs(self.vel_x) < 1.2:
+						self.vel_x = 0
 		elif direction == 'x':
 			for platform in platforms:
 				if self.rect.colliderect(platform.rect):
@@ -41,12 +45,24 @@ class Projectile(pygame.sprite.Sprite):
 					self.vel_x = -self.vel_x * 0.5
 
 
-	def update(self, platforms):
+	def update(self, platforms, bins, players, history):
 		self.apply_gravity()
 		self.rect.x += self.vel_x
 		self.collide(platforms, 'x')
 		self.rect.y += self.vel_y
 		self.collide(platforms, 'y')
-	
+		for bin in bins:
+			score = bin.collide_with_projectile(self)
+			if score != 0:
+				players[bin.scores_toward - 1].score.increment(score)
+				history[self.thrown_by - 1].append((self.trash, bin.color))
+				Projectile.instances.remove(self)
+				self.kill()
+		if self.vel_y == self.vel_x == 0:
+			Projectile.instances.remove(self)
+			history[self.thrown_by - 1].append((self.trash, 'ground'))
+			self.kill()
+			players[self.thrown_by - 1].score.increment(- 100)
+
 	def draw(self, window):
 		window.blit(self.image, (self.rect.x, self.rect.y))

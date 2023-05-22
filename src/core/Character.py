@@ -1,4 +1,4 @@
-class Character(): # Placeholder, will be replaced with actual character class later on
+class Character():
 	def __init__(self, name, image, description, stats, special_skill=None):
 		self.name = name
 		self.image = image

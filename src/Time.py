@@ -5,17 +5,17 @@ import time
 WINDOW_SIZE = (1280, 720)
 
 # backgrounds
-mountains_1 = pygame.transform.scale(pygame.image.load('../assets/images/fond_1/mount1.png'), WINDOW_SIZE)
-mountains_2 = pygame.transform.scale(pygame.image.load('../assets/images/fond_1/mount2.png'), WINDOW_SIZE)
-mountains_3 = pygame.transform.scale(pygame.image.load('../assets/images/fond_1/mount3.png'), WINDOW_SIZE)
-mountains_4 = pygame.transform.scale(pygame.image.load('../assets/images/fond_1/mount4.png'), WINDOW_SIZE)
-mountains_5 = pygame.transform.scale(pygame.image.load('../assets/images/fond_1/mount5.png'), WINDOW_SIZE)
+mountains_1 = pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount1.png'), WINDOW_SIZE)
+mountains_2 = pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount2.png'), WINDOW_SIZE)
+mountains_3 = pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount3.png'), WINDOW_SIZE)
+mountains_4 = pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount4.png'), WINDOW_SIZE)
+mountains_5 = pygame.transform.scale(pygame.image.load('assets/images/fond_1/mount5.png'), WINDOW_SIZE)
 
 
 
 ### MAIN
 pygame.init()
-icon = pygame.image.load('../assets/icon.png')
+icon = pygame.image.load('assets/icon.png')
 window = pygame.display.set_mode(WINDOW_SIZE)
 pygame.display.set_caption('Trash Crash')
 pygame.display.set_icon(icon)

@@ -16,8 +16,7 @@ class Arrow():
         self.rect = self.original_image.get_rect()
         self.rect.x = x
         self.rect.y = y
-
-
+        self.current_rotation_angle = 0
 
     def draw(self, screen, mirror):
         if mirror:
@@ -27,11 +26,12 @@ class Arrow():
             screen.blit(self.image, (self.rect.x - int(self.image.get_width() / 2), self.rect.y - int(self.image.get_height() / 2)))
 
     def rotation(self, event):
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
             if self.player == 1 and event.key == pygame.K_z or self.player == 2 and event.key == pygame.K_i:
-                self.angle += 6
+                self.current_rotation_angle = 1 if event.type == pygame.KEYDOWN else 0
             if self.player == 1 and event.key == pygame.K_s or self.player == 2 and event.key == pygame.K_k:
-                self.angle -= 6
+                self.current_rotation_angle= -1 if event.type == pygame.KEYDOWN else 0
+        self.angle += self.current_rotation_angle * 6
         if self.angle < 0:
             self.angle = 0
         if self.angle > 90:

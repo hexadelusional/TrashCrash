@@ -1,11 +1,11 @@
 import pygame
-
 from core.Scene import Scene
+from ui.Button import Button
 
+image = pygame.image.load('assets/ui/credits.png')
 
 def on_enter(scene):
-	scene.font = pygame.font.Font(None, 30)
-	scene.bg = pygame.image.load('assets/ui/menu_background.png')
+	scene.back = Button(10, 10, 'Back', lambda: scene.switcher.switch_to('main_menu'), font_size=20)
 
 def on_loop(scene, window):
 	for event in pygame.event.get():
@@ -13,11 +13,9 @@ def on_loop(scene, window):
 			if event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN:
 				scene.switcher.switch_to('main_menu')
 				return
+		scene.back.update(event)
 	
-	window.blit(scene.bg, (0, 0))
-	text = scene.font.render('Credits', True, (255, 255, 255))
-	window.blit(text, (210, 300))
-	text = scene.font.render('iri paul coco adele maxime ^^', True, (255, 255, 255))
-	window.blit(text, (210, 340))
+	window.blit(image, (0, 0))
+	scene.back.draw(window)
 
 credits_scene = Scene(on_enter, on_loop)
