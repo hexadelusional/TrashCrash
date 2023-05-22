@@ -12,6 +12,7 @@ from sprites.Player import Player
 from sprites.Projectile import Projectile
 from sprites.Score import Score
 from sprites.Sky import Sky
+from sprites.Timer import Timer
 from sprites.Trash import Trash
 from ui.Button import Button
 
@@ -30,6 +31,7 @@ def on_enter(scene, settings):
 		Bin(1200, 570, 'yellow', 1)
 	]
 	scene.paused = False
+	scene.timer = Timer(180)
 	scene.trash_group = pygame.sprite.Group()
 	scene.sky = Sky(WINDOW_SIZE)
 	scene.clouds = [Cloud(WINDOW_SIZE)]
@@ -135,6 +137,8 @@ def loop(scene, window):
 	else:
 		main_mixer.set_volume(1)
 		scene.framecount += 1
+		if scene.framecount % 60 == 0:
+			scene.timer.update()
 		if scene.framecount % 240 == 0:
 			scene.clouds.append(Cloud(WINDOW_SIZE))
 		for cloud in scene.clouds:
@@ -178,6 +182,7 @@ def loop(scene, window):
 	scene.player1.score.draw(window)
 	scene.player2.score.draw(window)
 	Projectile.instances.draw(window)
+	scene.timer.draw(window)
 	if scene.paused:
 		window.blit(scene.pause_dim, (0, 0))
 		window.blit(scene.pause_title, (640 - scene.pause_title.get_width() // 2, 200))
